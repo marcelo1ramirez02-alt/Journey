@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand-bg: #05070A;
+  --color-brand-gray: #111827;
+  --color-brand-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  background-color: #05070A;
+  color: #F3F4F6;
+  font-family: var(--font-sans);
+}
+
+/* Glass styling from High Density Theme */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+/* Glass hover effect */
+.glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px -10px rgba(0, 66, 255, 0.25);
+}
+
+/* Accent Gradients from High Density Theme */
+.accent-gradient {
+  background: linear-gradient(135deg, #0042FF 0%, #00A3FF 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #0042FF, #00A3FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.roadmap-node {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+.roadmap-node:hover {
+  border-color: #0042FF;
+  background: rgba(0, 66, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #0042FF;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #0042FF;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes flowLine {
+  from {
+    stroke-dashoffset: 20;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

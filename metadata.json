@@ -1,0 +1,6 @@
+{
+  "name": "Journey",
+  "description": "Descubre tu roadmap profesional dinámico. Explora caminos, áreas de especialización y líneas de carrera con inteligencia orientada a estudiantes y jóvenes profesionales.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
