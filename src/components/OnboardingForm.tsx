@@ -84,7 +84,14 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
         }),
       });
       if (!res.ok) {
-        throw new Error('Error al conectar con la IA');
+        let errMsg = 'Error al conectar con la IA';
+        try {
+          const errData = await res.json();
+          if (errData && errData.error) {
+            errMsg = `Error de la IA: ${errData.error}`;
+          }
+        } catch (_) {}
+        throw new Error(errMsg);
       }
       const data = await res.json();
       if (data.industries && Array.isArray(data.industries)) {
@@ -98,7 +105,7 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
       }
     } catch (err: any) {
       console.error('Error fetching industries:', err);
-      setIndustryFetchError('No pudimos generar industrias con IA. Usando una lista general de respaldo.');
+      setIndustryFetchError(err.message || 'No pudimos generar industrias con IA. Usando una lista general de respaldo.');
       const defaultList = [
         { id: 'tecnologia', label: 'Tecnología y SaaS', desc: 'Startups, desarrollo de software, redes, hardware, ERPs, apps y productos digitales.' },
         { id: 'consumo_masivo', label: 'Consumo Masivo y Retail', desc: 'Supermercados, distribución, retail y marcas de consumo masivo.' },

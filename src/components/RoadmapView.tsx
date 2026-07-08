@@ -108,7 +108,14 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
           })
         });
         if (!res.ok) {
-          throw new Error('Fallo al generar el mapa interactivo');
+          let errMsg = 'Fallo al generar el mapa interactivo';
+          try {
+            const errData = await res.json();
+            if (errData && errData.error) {
+              errMsg = `Fallo al generar el mapa: ${errData.error}`;
+            }
+          } catch (_) {}
+          throw new Error(errMsg);
         }
         const data = await res.json();
         if (data.template) {
@@ -119,7 +126,7 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
         }
       } catch (err: any) {
         console.error('Error fetching custom roadmap:', err);
-        setRoadmapError('No pudimos construir el mapa personalizado con IA debido a las limitaciones de red del entorno de previsualización. Usando plantilla de respaldo.');
+        setRoadmapError(err.message || 'No pudimos construir el mapa personalizado con IA debido a las limitaciones de red del entorno de previsualización. Usando plantilla de respaldo.');
       } finally {
         setLoadingRoadmap(false);
       }
