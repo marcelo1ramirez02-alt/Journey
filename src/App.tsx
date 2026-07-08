@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import OnboardingForm from './components/OnboardingForm';
@@ -125,6 +126,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#05070A] text-[#F3F4F6] font-sans selection:bg-indigo-500 selection:text-white">
+      <Analytics />
       
       {/* Navbar header */}
       <Navbar 
