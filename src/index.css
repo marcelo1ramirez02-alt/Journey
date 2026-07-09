@@ -1,40 +1,124 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-brand-bg: #05070A;
-  --color-brand-gray: #111827;
-  --color-brand-border: rgba(255, 255, 255, 0.08);
+  --color-brand-bg: #F8F8F9;
+  --color-brand-charcoal: #333133;
+  --color-brand-blue: #0042FF;
+  --color-brand-light-blue: #E6ECFF;
+  --color-brand-gray: #E5E7EB;
+  --color-brand-border: rgba(51, 49, 51, 0.15);
+}
+
+html.has-scroll-smooth {
+  overflow: hidden;
+}
+
+html.has-scroll-dragging {
+  user-select: none;
 }
 
 body {
-  background-color: #05070A;
-  color: #F3F4F6;
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-charcoal);
   font-family: var(--font-sans);
+  overflow-x: hidden;
 }
 
-/* Glass styling from High Density Theme */
+/* Brutalist Custom Styles */
+.brutalist-border {
+  border: 2px solid var(--color-brand-charcoal);
+}
+
+.brutalist-shadow-blue {
+  box-shadow: 4px 4px 0px var(--color-brand-blue);
+}
+
+.brutalist-shadow-charcoal {
+  box-shadow: 4px 4px 0px var(--color-brand-charcoal);
+}
+
+.brutalist-shadow-charcoal-lg {
+  box-shadow: 8px 8px 0px var(--color-brand-charcoal);
+}
+
+.brutalist-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--color-brand-charcoal);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.brutalist-button:hover {
+  transform: translate(-2px, -2px);
+}
+
+.brutalist-button-primary {
+  background-color: var(--color-brand-blue);
+  color: #FFFFFF;
+  box-shadow: 4px 4px 0px var(--color-brand-charcoal);
+}
+.brutalist-button-primary:hover {
+  box-shadow: 6px 6px 0px var(--color-brand-charcoal);
+}
+.brutalist-button-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--color-brand-charcoal);
+}
+
+.brutalist-button-secondary {
+  background-color: #FFFFFF;
+  color: var(--color-brand-charcoal);
+  box-shadow: 4px 4px 0px var(--color-brand-charcoal);
+}
+.brutalist-button-secondary:hover {
+  box-shadow: 6px 6px 0px var(--color-brand-charcoal);
+}
+.brutalist-button-secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--color-brand-charcoal);
+}
+
+.brutalist-button-dark {
+  background-color: var(--color-brand-charcoal);
+  color: #FFFFFF;
+  box-shadow: 4px 4px 0px var(--color-brand-blue);
+}
+.brutalist-button-dark:hover {
+  box-shadow: 6px 6px 0px var(--color-brand-blue);
+}
+.brutalist-button-dark:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--color-brand-blue);
+}
+
+.brutalist-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--color-brand-charcoal);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glass styling from High Density Theme (Adapted to Light Mode) */
 .glass {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  border: 2px solid var(--color-brand-charcoal);
+  border-radius: 0px; /* Monospace/brutalist style */
 }
 
-/* Glass hover effect */
-.glass-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.glass-hover:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 10px 30px -10px rgba(0, 66, 255, 0.25);
-}
-
-/* Accent Gradients from High Density Theme */
+/* Accent Gradients */
 .accent-gradient {
   background: linear-gradient(135deg, #0042FF 0%, #00A3FF 100%);
 }
@@ -42,24 +126,27 @@ body {
 .text-gradient {
   background: linear-gradient(to right, #0042FF, #00A3FF);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .roadmap-node {
   padding: 8px 16px;
-  border-radius: 8px;
-  background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0px;
+  background: #FFFFFF;
+  border: 2px solid var(--color-brand-charcoal);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   position: relative;
   transition: all 0.2s ease-in-out;
+  color: var(--color-brand-charcoal);
 }
 
 .roadmap-node:hover {
   border-color: #0042FF;
-  background: rgba(0, 66, 255, 0.1);
-  transform: translateY(-1px);
+  background: var(--color-brand-light-blue);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0px var(--color-brand-charcoal);
 }
 
 .dot {
@@ -72,18 +159,19 @@ body {
 
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--color-brand-bg);
+  border-left: 2px solid var(--color-brand-charcoal);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 9999px;
+  background: var(--color-brand-charcoal);
+  border: 2px solid var(--color-brand-bg);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-brand-blue);
 }
 
 @keyframes flowLine {
@@ -93,4 +181,9 @@ body {
   to {
     stroke-dashoffset: 0;
   }
+}
+
+/* Locomotive Scroll Styles */
+.c-scrollbar {
+  display: none !important;
 }

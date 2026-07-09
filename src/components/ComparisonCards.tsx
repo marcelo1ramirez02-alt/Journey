@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { TrendingUp, Sparkles, UserCheck, Award, Layers, ShieldCheck, Zap, DollarSign } from 'lucide-react';
 import { comparisonCards } from '../data/mockRoadmaps';
 import { ComparisonCardData } from '../types';
+import CornerCuts from './CornerCuts';
 
 export default function ComparisonCards() {
   const [filter, setFilter] = useState<'all' | 'high_demand' | 'creative' | 'data' | 'social'>('all');
@@ -16,15 +17,15 @@ export default function ComparisonCards() {
     return true;
   });
 
-  // Helper to render indicator circles
+  // Helper to render rectangular brutalist indicators
   const renderMeter = (value: number, activeColorClass: string) => {
     return (
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 select-none">
         {[1, 2, 3, 4, 5].map((idx) => (
           <div
             key={idx}
-            className={`h-2.5 w-2.5 rounded-full ${
-              idx <= value ? activeColorClass : 'bg-[#111827] border border-[rgba(255,255,255,0.08)]'
+            className={`h-3 w-5 border border-brand-charcoal transition-colors duration-150 ${
+              idx <= value ? activeColorClass : 'bg-white'
             }`}
           />
         ))}
@@ -33,72 +34,82 @@ export default function ComparisonCards() {
   };
 
   return (
-    <section id="comparador" className="bg-[#05070A] py-16 sm:py-24 border-t border-[rgba(255,255,255,0.08)]">
+    <section 
+      id="comparador" 
+      className="bg-brand-bg py-16 sm:py-24 border-t-2 border-brand-charcoal"
+      data-scroll-section
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-indigo-400 bg-indigo-950/40 border border-indigo-800/30 px-3 py-1 rounded-full inline-flex items-center gap-1">
-            <Zap className="h-3 w-3 text-indigo-400 animate-pulse" /> Comparador Profesional
+          <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-brand-charcoal bg-[#FFFFFF] border-2 border-brand-charcoal px-3 py-1 shadow-[2px_2px_0px_rgba(51,49,51,1)] inline-flex items-center gap-1.5">
+            <Zap className="h-3 w-3 text-brand-blue" />
+            <span>[ COMPARADOR DE ÁREAS PROFESIONALES ]</span>
           </span>
-          <h2 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl mt-3">
-            Compara las principales áreas profesionales
+          <h2 className="text-3xl font-black uppercase text-brand-charcoal tracking-tight sm:text-4xl mt-4">
+            compara las principales especialidades
           </h2>
-          <p className="mt-4 text-gray-400 text-sm sm:text-base">
+          <p className="mt-3 text-brand-charcoal/80 text-xs sm:text-sm font-medium">
             Descubre los niveles de demanda, exigencia técnica, habilidades necesarias y salarios iniciales estimados de cada especialidad empresarial.
           </p>
         </div>
 
         {/* Filter Navigation */}
-        <div className="flex flex-wrap justify-center items-center gap-2 mb-10">
+        <div className="flex flex-wrap justify-center items-center gap-3 mb-12 select-none">
           <button
             onClick={() => setFilter('all')}
-            className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer ${
+            className={`brutalist-button text-xs py-2 px-4 shadow-[2px_2px_0px_rgba(51,49,51,1)] ${
               filter === 'all'
-                ? 'bg-gradient-to-br from-[#6366F1] to-[#A855F7] text-white shadow-md shadow-indigo-500/10'
-                : 'bg-[#111827] text-gray-400 border border-[rgba(255,255,255,0.08)] hover:border-gray-700 hover:text-white'
+                ? 'bg-brand-blue text-white'
+                : 'bg-white text-brand-charcoal'
             }`}
           >
+            <CornerCuts size={6} color="text-brand-bg" />
             Todas las áreas
           </button>
           <button
             onClick={() => setFilter('high_demand')}
-            className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer ${
+            className={`brutalist-button text-xs py-2 px-4 shadow-[2px_2px_0px_rgba(51,49,51,1)] ${
               filter === 'high_demand'
-                ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/10'
-                : 'bg-[#111827] text-gray-400 border border-[rgba(255,255,255,0.08)] hover:border-gray-700 hover:text-white'
+                ? 'bg-emerald-500 text-white'
+                : 'bg-white text-brand-charcoal'
             }`}
           >
+            <CornerCuts size={6} color="text-brand-bg" />
             🔥 Alta Demanda
           </button>
           <button
             onClick={() => setFilter('data')}
-            className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer ${
+            className={`brutalist-button text-xs py-2 px-4 shadow-[2px_2px_0px_rgba(51,49,51,1)] ${
               filter === 'data'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/10'
-                : 'bg-[#111827] text-gray-400 border border-[rgba(255,255,255,0.08)] hover:border-gray-700 hover:text-white'
+                ? 'bg-[#6366F1] text-white'
+                : 'bg-white text-brand-charcoal'
             }`}
           >
+            <CornerCuts size={6} color="text-brand-bg" />
             📊 Uso de Datos (4+)
           </button>
           <button
             onClick={() => setFilter('creative')}
-            className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer ${
+            className={`brutalist-button text-xs py-2 px-4 shadow-[2px_2px_0px_rgba(51,49,51,1)] ${
               filter === 'creative'
-                ? 'bg-purple-600 text-white shadow-md shadow-purple-500/10'
-                : 'bg-[#111827] text-gray-400 border border-[rgba(255,255,255,0.08)] hover:border-gray-700 hover:text-white'
+                ? 'bg-purple-600 text-white'
+                : 'bg-white text-brand-charcoal'
             }`}
           >
+            <CornerCuts size={6} color="text-brand-bg" />
             💡 Alta Creatividad
           </button>
           <button
             onClick={() => setFilter('social')}
-            className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer ${
+            className={`brutalist-button text-xs py-2 px-4 shadow-[2px_2px_0px_rgba(51,49,51,1)] ${
               filter === 'social'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/10 font-bold'
-                : 'bg-[#111827] text-gray-400 border border-[rgba(255,255,255,0.08)] hover:border-gray-700 hover:text-white'
+                ? 'bg-amber-500 text-brand-charcoal'
+                : 'bg-white text-brand-charcoal'
             }`}
           >
+            <CornerCuts size={6} color="text-brand-bg" />
             🤝 Contacto Humano
           </button>
         </div>
@@ -111,74 +122,67 @@ export default function ComparisonCards() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              whileHover={{ 
-                y: -6,
-                scale: 1.015,
-                borderColor: "rgba(99, 102, 241, 0.4)",
-                boxShadow: "0 20px 40px -15px rgba(99, 102, 241, 0.25)"
-              }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               key={card.areaName}
-              className="glass p-6 flex flex-col justify-between transition-colors duration-300 hover:bg-[#111827]/30 group relative overflow-hidden"
+              className="relative border-2 border-brand-charcoal bg-white p-6 flex flex-col justify-between shadow-[4px_4px_0px_rgba(51,49,51,1)] hover:shadow-[6px_6px_0px_rgba(0,66,255,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-200 group overflow-hidden"
             >
-              {/* Card top banner decoration */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6366F1] to-[#A855F7] opacity-60 group-hover:opacity-100 transition-opacity" />
+              <CornerCuts size={12} color="text-brand-bg" />
 
               <div>
                 {/* Header info */}
                 <div className="flex items-start justify-between gap-2 mb-3">
                   <div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors">
+                    <h3 className="text-base font-black uppercase text-brand-charcoal group-hover:text-brand-blue transition-colors">
                       {card.areaName}
                     </h3>
-                    <span className="text-[10px] text-gray-500 font-mono block">
+                    <span className="text-[9px] text-brand-charcoal/50 font-mono block mt-0.5">
                       Apto para: {card.careerName}
                     </span>
                   </div>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${
+                  <span className={`text-[9px] px-2 py-0.5 border-2 font-mono font-bold uppercase shrink-0 ${
                     card.demand === 'Alta' 
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
-                      : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                      ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30' 
+                      : 'bg-amber-500/10 text-amber-600 border-amber-500/30'
                   }`}>
-                    Demanda {card.demand}
+                    {card.demand === 'Alta' ? '[ Alta ]' : '[ Media ]'}
                   </span>
                 </div>
 
-                <p className="text-xs text-gray-400 leading-relaxed mb-6">
+                <p className="text-xs text-brand-charcoal/70 leading-relaxed mb-6 font-medium">
                   {card.description}
                 </p>
 
                 {/* Meter Gauges */}
-                <div className="space-y-3 border-t border-b border-[rgba(255,255,255,0.08)] py-4 mb-6">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400">📊 Uso de Datos</span>
-                    {renderMeter(card.dataUsage, 'bg-[#6366F1]')}
+                <div className="space-y-3 border-t-2 border-b-2 border-brand-charcoal/10 py-4 mb-6">
+                  <div className="flex items-center justify-between text-xs font-mono font-bold text-brand-charcoal">
+                    <span>📊 USO DE DATOS</span>
+                    {renderMeter(card.dataUsage, 'bg-brand-blue')}
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400">💡 Creatividad</span>
-                    {renderMeter(card.creativity, 'bg-purple-400')}
+                  <div className="flex items-center justify-between text-xs font-mono font-bold text-brand-charcoal">
+                    <span>💡 CREATIVIDAD</span>
+                    {renderMeter(card.creativity, 'bg-purple-500')}
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400">🤝 Contacto Humano</span>
-                    {renderMeter(card.socialContact, 'bg-amber-400')}
+                  <div className="flex items-center justify-between text-xs font-mono font-bold text-brand-charcoal">
+                    <span>🤝 CONTACTO HUMANO</span>
+                    {renderMeter(card.socialContact, 'bg-amber-500')}
                   </div>
                 </div>
 
                 {/* Salary Range */}
-                <div className="mb-5 bg-[#05070A]/50 p-3 rounded-xl border border-[rgba(255,255,255,0.06)]">
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500 block">Rango Salarial Promedio (S/.)</span>
-                  <span className="text-xs sm:text-sm font-bold text-emerald-400 flex items-center gap-1 mt-0.5">
-                    <DollarSign className="h-4 w-4 text-emerald-400 shrink-0" />
+                <div className="mb-5 bg-brand-bg p-3 border-2 border-brand-charcoal">
+                  <span className="text-[9px] uppercase tracking-wider text-brand-charcoal/50 font-mono font-black block">RANGO SALARIAL ESTIMADO</span>
+                  <span className="text-xs sm:text-sm font-mono font-black text-brand-charcoal flex items-center gap-0.5 mt-0.5">
+                    <DollarSign className="h-4 w-4 text-brand-blue shrink-0" />
                     {card.salaryRange}
                   </span>
                 </div>
 
                 {/* Skills Section */}
                 <div className="mb-5">
-                  <span className="text-[10px] font-bold text-white block mb-2 uppercase tracking-wide">Habilidades Clave</span>
+                  <span className="text-[9px] font-black text-brand-charcoal block mb-2 uppercase tracking-wide font-mono">[ Habilidades Clave ]</span>
                   <div className="flex flex-wrap gap-1.5">
                     {card.keySkills.map((skill) => (
-                      <span key={skill} className="text-[10px] bg-[#111827] text-gray-300 border border-[rgba(255,255,255,0.08)] px-2 py-0.5 rounded">
+                      <span key={skill} className="text-[9px] font-mono font-bold bg-white text-brand-charcoal border border-brand-charcoal px-2 py-0.5">
                         {skill}
                       </span>
                     ))}
@@ -187,11 +191,11 @@ export default function ComparisonCards() {
               </div>
 
               {/* Recommended Entry Roles */}
-              <div className="pt-4 border-t border-[rgba(255,255,255,0.08)] mt-auto">
-                <span className="text-[10px] font-bold text-indigo-400 block mb-2 uppercase tracking-wide">Primeros Puestos Sugeridos</span>
-                <div className="flex flex-wrap gap-1">
+              <div className="pt-4 border-t-2 border-brand-charcoal/10 mt-auto">
+                <span className="text-[9px] font-black text-brand-blue block mb-2 uppercase tracking-wide font-mono">[ Puestos Sugeridos ]</span>
+                <div className="flex flex-wrap gap-1.5">
                   {card.recommendedRoles.map((role) => (
-                    <span key={role} className="text-[10px] bg-indigo-950/30 text-indigo-300 border border-indigo-800/20 px-2 py-0.5 rounded font-medium">
+                    <span key={role} className="text-[9px] font-mono font-bold bg-brand-light-blue text-brand-blue border border-brand-blue/30 px-2 py-0.5">
                       {role}
                     </span>
                   ))}

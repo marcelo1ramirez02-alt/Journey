@@ -33,6 +33,7 @@ import { OnboardingData } from '../types';
 import { generateDynamicGraph, GraphNode, CareerTemplate } from '../data';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import CornerCuts from './CornerCuts';
 
 interface RoadmapViewProps {
   onboardingData: OnboardingData;
@@ -82,7 +83,7 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
       const careerKey = currentCareer.trim().replace(/\s+/g, '_').toLowerCase();
       const industryKey = (onboardingData.industry || 'general').trim().replace(/\s+/g, '_').toLowerCase();
       const positionKey = (onboardingData.currentPosition || '').trim().replace(/\s+/g, '_').toLowerCase();
-      const cacheKey = `journey_template_${careerKey}_${industryKey}_${positionKey}`;
+      const cacheKey = `journey_template_${careerKey}_${industryKey}_${positionKey}_v4`;
       
       const saved = localStorage.getItem(cacheKey);
       if (saved) {
@@ -381,61 +382,61 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
 
   // Node badge/border colors
   const getNodeColorClasses = (type: GraphNode['type'], isSelected: boolean) => {
-    const base = "whiteboard-node-card border-2 transition-all duration-200 cursor-pointer p-3.5 rounded-2xl w-[220px] h-[104px] text-left flex flex-col justify-between shadow-xl";
+    const base = "whiteboard-node-card border-2 transition-all duration-200 cursor-pointer p-3.5 rounded-none w-[220px] h-[104px] text-left flex flex-col justify-between";
     switch (type) {
       case 'base':
         return {
-          card: `${base} ${isSelected ? 'border-[#0042FF] bg-[#0042FF]/10 shadow-[0_0_25px_rgba(0,66,255,0.4)] ring-2 ring-[#0042FF]/30' : 'border-[#0042FF]/50 bg-[#0f111a]/95 hover:border-[#0042FF]'}`,
-          badge: 'bg-[#0042FF]/10 text-blue-300 border-[#0042FF]/20',
-          glow: 'rgba(0, 66, 255, 0.25)'
+          card: `${base} border-brand-blue ${isSelected ? 'bg-brand-light-blue shadow-[3px_3px_0px_rgba(51,49,51,1)]' : 'bg-white hover:bg-brand-light-blue/20 hover:shadow-[3px_3px_0px_rgba(51,49,51,1)]'}`,
+          badge: 'bg-brand-blue/10 text-brand-blue border-brand-blue/20',
+          glow: 'rgba(0, 66, 255, 0.1)'
         };
       case 'tecnico':
         return {
-          card: `${base} ${isSelected ? 'border-blue-400 bg-blue-950/70 shadow-[0_0_25px_rgba(59,130,246,0.4)] ring-2 ring-blue-400/30' : 'border-blue-600/40 bg-[#070b13]/95 hover:border-blue-500'}`,
-          badge: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
-          glow: 'rgba(59, 130, 246, 0.2)'
+          card: `${base} border-[#6366F1] ${isSelected ? 'bg-indigo-50 shadow-[3px_3px_0px_rgba(51,49,51,1)]' : 'bg-white hover:bg-indigo-50/20 hover:shadow-[3px_3px_0px_rgba(51,49,51,1)]'}`,
+          badge: 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20',
+          glow: 'rgba(99, 102, 241, 0.1)'
         };
       case 'herramienta':
         return {
-          card: `${base} ${isSelected ? 'border-cyan-400 bg-cyan-950/70 shadow-[0_0_25px_rgba(6,182,212,0.4)] ring-2 ring-cyan-400/30' : 'border-cyan-600/40 bg-[#070b13]/95 hover:border-cyan-500'}`,
-          badge: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20',
-          glow: 'rgba(6, 182, 212, 0.2)'
+          card: `${base} border-[#06B6D4] ${isSelected ? 'bg-cyan-50 shadow-[3px_3px_0px_rgba(51,49,51,1)]' : 'bg-white hover:bg-cyan-50/20 hover:shadow-[3px_3px_0px_rgba(51,49,51,1)]'}`,
+          badge: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20',
+          glow: 'rgba(6, 182, 212, 0.1)'
         };
       case 'blanda':
         return {
-          card: `${base} ${isSelected ? 'border-emerald-400 bg-emerald-950/70 shadow-[0_0_25px_rgba(16,185,129,0.4)] ring-2 ring-emerald-400/30' : 'border-emerald-600/40 bg-[#070b13]/95 hover:border-emerald-500'}`,
-          badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
-          glow: 'rgba(16, 185, 129, 0.2)'
+          card: `${base} border-[#EC4899] ${isSelected ? 'bg-pink-50 shadow-[3px_3px_0px_rgba(51,49,51,1)]' : 'bg-white hover:bg-pink-50/20 hover:shadow-[3px_3px_0px_rgba(51,49,51,1)]'}`,
+          badge: 'bg-pink-500/10 text-pink-600 border-pink-500/20',
+          glow: 'rgba(236, 72, 153, 0.1)'
         };
       case 'rama':
         return {
-          card: `${base} ${isSelected ? 'border-purple-400 bg-purple-950/70 shadow-[0_0_25px_rgba(139,92,246,0.4)] ring-2 ring-purple-400/30' : 'border-purple-600/40 bg-[#070b13]/95 hover:border-purple-500'}`,
-          badge: 'bg-purple-500/10 text-purple-300 border-purple-500/20',
-          glow: 'rgba(139, 92, 246, 0.2)'
+          card: `${base} border-[#8B5CF6] ${isSelected ? 'bg-purple-50 shadow-[3px_3px_0px_rgba(51,49,51,1)]' : 'bg-white hover:bg-purple-50/20 hover:shadow-[3px_3px_0px_rgba(51,49,51,1)]'}`,
+          badge: 'bg-purple-500/10 text-purple-600 border-purple-500/20',
+          glow: 'rgba(139, 92, 246, 0.1)'
         };
       case 'práctica':
         return {
-          card: `${base} ${isSelected ? 'border-amber-400 bg-amber-950/70 shadow-[0_0_25px_rgba(245,158,11,0.4)] ring-2 ring-amber-400/30' : 'border-amber-600/40 bg-[#070b13]/95 hover:border-amber-500'}`,
-          badge: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
-          glow: 'rgba(245, 158, 11, 0.2)'
+          card: `${base} border-[#F59E0B] ${isSelected ? 'bg-amber-50 shadow-[3px_3px_0px_rgba(51,49,51,1)]' : 'bg-white hover:bg-amber-50/20 hover:shadow-[3px_3px_0px_rgba(51,49,51,1)]'}`,
+          badge: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+          glow: 'rgba(245, 158, 11, 0.1)'
         };
       case 'junior':
         return {
-          card: `${base} ${isSelected ? 'border-rose-400 bg-rose-950/70 shadow-[0_0_25px_rgba(244,63,94,0.4)] ring-2 ring-rose-400/30' : 'border-rose-600/40 bg-[#070b13]/95 hover:border-rose-500'}`,
-          badge: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
-          glow: 'rgba(244, 63, 94, 0.2)'
+          card: `${base} border-[#F43F5E] ${isSelected ? 'bg-rose-50 shadow-[3px_3px_0px_rgba(51,49,51,1)]' : 'bg-white hover:bg-rose-50/20 hover:shadow-[3px_3px_0px_rgba(51,49,51,1)]'}`,
+          badge: 'bg-rose-500/10 text-rose-600 border-rose-500/20',
+          glow: 'rgba(244, 63, 94, 0.1)'
         };
       case 'especialización':
         return {
-          card: `${base} ${isSelected ? 'border-fuchsia-400 bg-fuchsia-950/70 shadow-[0_0_25px_rgba(217,70,239,0.4)] ring-2 ring-fuchsia-400/30' : 'border-fuchsia-600/40 bg-[#070b13]/95 hover:border-fuchsia-500'}`,
-          badge: 'bg-fuchsia-500/10 text-fuchsia-300 border-fuchsia-500/20',
-          glow: 'rgba(217, 70, 239, 0.2)'
+          card: `${base} border-[#D946EF] ${isSelected ? 'bg-fuchsia-50 shadow-[3px_3px_0px_rgba(51,49,51,1)]' : 'bg-white hover:bg-fuchsia-50/20 hover:shadow-[3px_3px_0px_rgba(51,49,51,1)]'}`,
+          badge: 'bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/20',
+          glow: 'rgba(217, 70, 239, 0.1)'
         };
       default:
         return {
-          card: `${base} border-slate-700 bg-[#070b13]/95`,
-          badge: 'bg-slate-800 text-slate-300 border-slate-700',
-          glow: 'rgba(148, 163, 184, 0.1)'
+          card: `${base} border-brand-charcoal bg-white`,
+          badge: 'bg-brand-bg text-brand-charcoal border-brand-charcoal/20',
+          glow: 'rgba(51, 49, 51, 0.05)'
         };
     }
   };
@@ -458,52 +459,76 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
   if (loadingRoadmap) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="min-h-[60vh] flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8 text-center bg-[#0d1527]/30 rounded-3xl border border-[rgba(255,255,255,0.04)] backdrop-blur-xl max-w-3xl mx-auto my-4 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+        <div className="min-h-[50vh] flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8 text-center bg-white border-2 border-brand-charcoal shadow-[6px_6px_0px_rgba(51,49,51,1)] max-w-3xl mx-auto my-4 relative overflow-hidden">
+          <CornerCuts size={16} color="text-brand-bg" />
           <div className="relative mb-8">
-            <div className="absolute inset-0 bg-[#0042FF]/10 rounded-full blur-2xl animate-pulse" />
-            <div className="relative bg-gradient-to-br from-blue-950 to-slate-950 p-5 rounded-2xl border border-[#0042FF]/30 shadow-[0_0_40px_rgba(0,66,255,0.2)]">
-              <Sparkles className="h-9 w-9 text-[#0042FF] animate-spin" style={{ animationDuration: '3s' }} />
+            <div className="relative bg-brand-light-blue p-5 border-2 border-brand-charcoal shadow-[3px_3px_0px_rgba(51,49,51,1)]">
+              <CornerCuts size={8} color="text-white" />
+              <Sparkles className="h-9 w-9 text-brand-blue animate-spin" style={{ animationDuration: '3s' }} />
             </div>
           </div>
 
-          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-            Diseñando tu Hoja de Ruta Personalizada con IA
+          <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-brand-charcoal">
+            Estructurando tu Roadmap con IA
           </h3>
           
-          <p className="text-gray-400 text-xs sm:text-sm max-w-md mt-2 leading-relaxed">
-            Estructurando un mapa multidimensional interactivo adaptado específicamente para tu carrera y la industria seleccionada.
+          <p className="text-brand-charcoal/70 text-xs sm:text-sm max-w-md mt-2 leading-relaxed font-medium">
+            Diseñando un mapa interactivo personalizado adaptado específicamente para tu carrera e industria de enfoque.
           </p>
 
           <div className="w-full max-w-sm mt-8 space-y-3 text-left">
-            <div className="flex items-center gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-[rgba(255,255,255,0.04)]">
-              <div className="h-2 w-2 rounded-full bg-[#0042FF] animate-ping" />
-              <span className="text-xs font-semibold text-gray-300 font-mono">
-                Estructurando roles según sector: <span className="text-[#0042FF] font-bold">{onboardingData.industry}</span>
+            <div className="flex items-center gap-3 bg-brand-bg p-3.5 border-2 border-brand-charcoal">
+              <div className="h-2 w-2 rounded-full bg-brand-blue animate-ping" />
+              <span className="text-xs font-bold text-brand-charcoal font-mono uppercase">
+                Industria: <span className="text-brand-blue">{onboardingData.industry}</span>
               </span>
             </div>
 
-            <div className="flex items-center gap-3 bg-slate-900/40 p-3.5 rounded-xl border border-[rgba(255,255,255,0.02)]">
-              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-xs text-gray-400 font-mono">
-                Especializando requisitos y herramientas de vanguardia
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3 bg-slate-900/20 p-3.5 rounded-xl border border-[rgba(255,255,255,0.01)]">
-              <div className="h-2 w-2 rounded-full bg-blue-500/50 animate-pulse" />
-              <span className="text-xs text-gray-500 font-mono">
-                Modelando proyectos prácticos individuales para tu CV
+            <div className="flex items-center gap-3 bg-[#FFFFFF] p-3.5 border-2 border-brand-charcoal">
+              <div className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
+              <span className="text-xs text-brand-charcoal/70 font-mono uppercase font-bold">
+                Mapeando requisitos y habilidades técnicas
               </span>
             </div>
           </div>
 
-          <div className="w-full max-w-xs bg-gray-900/80 h-1.5 rounded-full mt-10 overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 via-[#0042FF] to-sky-400 h-full w-2/3 rounded-full animate-pulse" />
+          <div className="w-full max-w-xs bg-white border-2 border-brand-charcoal h-3 rounded-none mt-10 overflow-hidden relative">
+            <div className="bg-brand-blue h-full w-2/3 animate-pulse border-r border-brand-charcoal" />
           </div>
           
-          <span className="text-[10px] font-mono text-gray-600 mt-3.5 uppercase tracking-wider">
-            Gemini 3.5 Flash · Modelo de Razonamiento Profesional Activo
+          <span className="text-[9px] font-mono font-bold text-brand-charcoal/50 mt-4 uppercase tracking-wider">
+            Gemini 3.5 Flash · Copiloto de Orientación Profesional
           </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (roadmapError) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="min-h-[40vh] flex flex-col items-center justify-center py-12 px-6 text-center bg-white border-2 border-brand-charcoal shadow-[6px_6px_0px_rgba(51,49,51,1)] max-w-2xl mx-auto my-4 relative overflow-hidden">
+          <CornerCuts size={16} color="text-red-50" />
+          <div className="relative mb-6">
+            <div className="bg-red-50 p-4 border-2 border-brand-charcoal shadow-[3px_3px_0px_rgba(51,49,51,1)]">
+              <CornerCuts size={8} color="text-white" />
+              <span className="text-3xl">⚠️</span>
+            </div>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-red-600">
+            Error de Generación AI
+          </h3>
+          <p className="text-brand-charcoal/80 text-sm mt-3 leading-relaxed font-semibold max-w-md">
+            {roadmapError}
+          </p>
+          <button
+            onClick={onReset}
+            className="brutalist-button brutalist-button-primary mt-8 py-2.5 px-6 font-bold flex items-center justify-center gap-2"
+          >
+            <CornerCuts size={6} color="text-brand-blue" />
+            <RotateCcw className="h-4 w-4" />
+            Volver a intentar
+          </button>
         </div>
       </div>
     );
@@ -513,37 +538,37 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
       
       {/* 1. TOP HEADER & METRIC SUMMARY */}
-      <div className="mb-6 border-b border-[rgba(255,255,255,0.06)] pb-5">
+      <div className="mb-6 border-b-2 border-brand-charcoal/10 pb-5">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-5">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20 flex items-center gap-1.5">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-blue bg-brand-light-blue px-3 py-1 border border-brand-blue/30 flex items-center gap-1.5 font-mono">
                 <GitBranch className="h-3.5 w-3.5" />
-                Árbol de Decisión Profesional Interactiva
+                [ Árbol de Carrera Interactivo ]
               </span>
-              <span className="text-[9px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded uppercase font-bold font-mono">
+              <span className="text-[9px] text-emerald-600 bg-emerald-50 border border-emerald-500/20 px-2.5 py-0.5 rounded uppercase font-bold font-mono">
                 Multidimensional (zoom/pan)
               </span>
             </div>
             
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Rutas de Carrera: <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">{currentCareer}</span>
+            <h2 className="text-2xl sm:text-3xl font-black uppercase text-brand-charcoal tracking-tight">
+              Rutas de Carrera: <span className="text-brand-blue">{currentCareer}</span>
             </h2>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1 max-w-3xl">
-              Un mapa interactivo diseñado tipo pizarra. Explora las bases, herramientas avanzadas, y las ramas laborales reales. Haz clic en los puestos de prácticas, analistas y especialidades para descubrir requerimientos de contratación reales.
+            <p className="text-xs sm:text-sm text-brand-charcoal/70 mt-1 max-w-3xl font-medium">
+              Un mapa interactivo diseñado tipo pizarra. Explora las bases, herramientas avanzadas y las ramas laborales reales. Haz clic en los puestos para descubrir requerimientos de contratación reales.
             </p>
             {onboardingData.stage && (
-              <div className="text-xs text-gray-400 flex flex-wrap items-center gap-2 mt-3.5 bg-[#1e293b]/20 px-3 py-1.5 rounded-xl border border-[rgba(255,255,255,0.04)] w-fit">
-                <span className="text-[10px] text-gray-500 uppercase tracking-widest font-mono font-bold">Perfil:</span>
-                <span className="text-indigo-400 font-bold bg-indigo-500/10 px-2.5 py-0.5 rounded border border-indigo-500/20 text-[11px] capitalize">
-                  {onboardingData.stage}
+              <div className="text-xs text-brand-charcoal/80 flex flex-wrap items-center gap-2 mt-3.5 bg-white border-2 border-brand-charcoal px-3 py-1.5 w-fit">
+                <span className="text-[10px] text-brand-charcoal/60 uppercase tracking-widest font-mono font-bold">Perfil:</span>
+                <span className="text-brand-blue font-bold font-mono text-[11px] uppercase">
+                  [{onboardingData.stage}]
                 </span>
                 {onboardingData.industry && (
                   <>
-                    <span className="text-gray-700">|</span>
-                    <span className="text-[10px] text-gray-500 uppercase tracking-widest font-mono font-bold">Industria de Enfoque:</span>
-                    <span className="text-purple-400 font-bold bg-purple-500/10 px-2.5 py-0.5 rounded border border-purple-500/20 text-[11px]">
-                      {onboardingData.industry}
+                    <span className="text-brand-charcoal/30">|</span>
+                    <span className="text-[10px] text-brand-charcoal/60 uppercase tracking-widest font-mono font-bold">Industria:</span>
+                    <span className="text-purple-600 font-bold font-mono text-[11px] uppercase">
+                      [{onboardingData.industry}]
                     </span>
                   </>
                 )}
@@ -553,26 +578,27 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
 
           {/* Local state metrics */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="bg-[#111827]/60 border border-[rgba(255,255,255,0.08)] rounded-2xl px-4 py-2.5 min-w-[210px]">
-              <div className="flex justify-between items-center text-[10px] text-gray-400 font-mono mb-1.5">
-                <span className="uppercase tracking-widest font-bold flex items-center gap-1">
-                  <Activity className="h-3 w-3 text-emerald-400" /> Progreso del Mapa
+            <div className="bg-white border-2 border-brand-charcoal rounded-none px-4 py-2.5 min-w-[210px] shadow-[2px_2px_0px_rgba(51,49,51,1)]">
+              <div className="flex justify-between items-center text-[10px] text-brand-charcoal font-mono mb-1.5 font-bold">
+                <span className="uppercase tracking-widest flex items-center gap-1">
+                  <Activity className="h-3 w-3 text-emerald-600" /> Progreso del Mapa
                 </span>
                 <span>{progressPercent}%</span>
               </div>
-              <div className="w-full bg-gray-800 h-2 rounded-full overflow-hidden mb-1">
-                <div className="bg-emerald-500 h-full rounded-full transition-all duration-300" style={{ width: `${progressPercent}%` }} />
+              <div className="w-full bg-brand-bg border border-brand-charcoal h-3 overflow-hidden mb-1 relative">
+                <div className="bg-emerald-500 h-full border-r border-brand-charcoal transition-all duration-300" style={{ width: `${progressPercent}%` }} />
               </div>
-              <span className="text-[10px] text-gray-500 font-mono">
-                {learnedNodesCount} Aprendido · {inProgressNodesCount} En Progreso
+              <span className="text-[9px] text-brand-charcoal/60 font-mono font-bold uppercase">
+                {learnedNodesCount} aprendido · {inProgressNodesCount} en curso
               </span>
             </div>
 
             <button
               onClick={exportToPDF}
               disabled={isExporting}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-800/80 disabled:cursor-not-allowed border border-indigo-500/30 px-4 py-2.5 text-xs font-bold text-white transition-all cursor-pointer shadow-md shadow-indigo-900/10"
+              className="brutalist-button brutalist-button-primary text-xs py-2.5 px-4 flex items-center justify-center gap-2"
             >
+              <CornerCuts size={6} color="text-brand-blue" />
               {isExporting ? (
                 <>
                   <div className="h-3.5 w-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -588,27 +614,28 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
 
             <button
               onClick={onReset}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gray-900 hover:bg-gray-850 border border-gray-800 px-4 py-2.5 text-xs font-bold text-gray-300 hover:text-white transition-all cursor-pointer shadow-md"
+              className="brutalist-button brutalist-button-secondary text-xs py-2.5 px-4 flex items-center justify-center gap-2"
             >
+              <CornerCuts size={6} color="text-white" />
               <RotateCcw className="h-3.5 w-3.5" />
-              Editar Formulario
+              Editar Filtros
             </button>
           </div>
         </div>
 
         {/* 2. ISOLATED PATHWAY FILTERS BAR */}
         <div className="flex flex-col gap-2 mt-4">
-          <span className="text-xs font-bold text-gray-400">Aislar camino de especialización:</span>
+          <span className="text-xs font-black font-mono text-brand-charcoal uppercase tracking-wider">[ Aislar Especialidad ]</span>
           <div className="flex flex-wrap gap-1.5 overflow-x-auto pb-1 select-none">
             <button
               onClick={() => setActiveRouteFilter('all')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`brutalist-button text-xs py-1.5 px-3 shadow-[1px_1px_0px_rgba(51,49,51,1)] ${
                 activeRouteFilter === 'all'
-                  ? 'bg-indigo-600 text-white border border-indigo-500 shadow-md shadow-indigo-500/10'
-                  : 'bg-slate-900/40 text-gray-400 hover:text-white border border-[rgba(255,255,255,0.04)] hover:border-slate-800'
+                  ? 'bg-brand-blue text-white'
+                  : 'bg-white text-brand-charcoal'
               }`}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />
+              <CornerCuts size={6} color={activeRouteFilter === 'all' ? "text-brand-blue" : "text-white"} />
               Todo el Árbol
             </button>
 
@@ -622,13 +649,14 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
                 <button
                   key={node.id}
                   onClick={() => setActiveRouteFilter(routeId)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+                  className={`brutalist-button text-xs py-1.5 px-3 shadow-[1px_1px_0px_rgba(51,49,51,1)] whitespace-nowrap ${
                     isSelected
-                      ? 'bg-slate-800 text-white border border-indigo-500 shadow-md'
-                      : 'bg-slate-900/40 text-gray-400 hover:text-white border border-[rgba(255,255,255,0.04)] hover:border-slate-800'
+                      ? 'bg-brand-charcoal text-white'
+                      : 'bg-white text-brand-charcoal'
                   }`}
                 >
-                  <span className={`h-1.5 w-1.5 rounded-full ${dotColor}`} />
+                  <CornerCuts size={6} color={isSelected ? "text-brand-charcoal" : "text-white"} />
+                  <span className={`h-1.5 w-1.5 rounded-full ${dotColor} border border-brand-charcoal/20 shrink-0`} />
                   {node.title}
                 </button>
               );
@@ -644,7 +672,7 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
         
         {/* VIRTUAL WHITEBOARD CANVAS */}
         <div className="w-full flex flex-col gap-2.5">
-          <div className="flex items-center justify-between px-1 text-xs text-gray-500 font-mono">
+          <div className="flex items-center justify-between px-1 text-xs text-brand-charcoal/50 font-mono font-bold uppercase">
             <span>PIZARRA VIRTUAL INTERACTIVA (EXPLORABLE)</span>
             <span className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -662,14 +690,14 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
             onTouchMove={handleTouchMove}
             onTouchEnd={handleMouseUpOrLeave}
             onWheel={handleWheel}
-            className="relative overflow-hidden w-full h-[740px] bg-[#05070c] border border-[rgba(255,255,255,0.06)] rounded-3xl cursor-grab active:cursor-grabbing select-none"
+            className="relative overflow-hidden w-full h-[740px] bg-white border-2 border-brand-charcoal cursor-grab active:cursor-grabbing select-none"
           >
-            {/* WHITEBOARD WATERMARK GRIDS */}
+            {/* WHITEBOARD WATERMARK GRIDS (Light Mode charcoal dot style) */}
             <div 
               className="absolute inset-0 transition-transform duration-75 origin-top-left pointer-events-none"
               style={{
                 transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-                backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px)',
+                backgroundImage: 'radial-gradient(rgba(51, 49, 51, 0.1) 1.2px, transparent 1.2px)',
                 backgroundSize: '32px 32px'
               }}
             />
@@ -797,7 +825,7 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
                                 )}
                                 <path 
                                   d={pathData1} 
-                                  stroke={isLineActive ? (isGapMastered ? "#10b981" : "url(#activeLine)") : "rgba(255, 255, 255, 0.22)"} 
+                                  stroke={isLineActive ? (isGapMastered ? "#10b981" : "url(#activeLine)") : "rgba(51, 49, 51, 0.15)"} 
                                   strokeWidth={isLineActive ? "2.5" : "1.5"} 
                                   fill="none" 
                                   strokeDasharray={isLineActive ? "6, 4" : "none"}
@@ -822,7 +850,7 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
                                 )}
                                 <path 
                                   d={pathData2} 
-                                  stroke={isLineActive ? (isGapMastered ? "#10b981" : "url(#activeLine)") : "rgba(255, 255, 255, 0.22)"} 
+                                  stroke={isLineActive ? (isGapMastered ? "#10b981" : "url(#activeLine)") : "rgba(51, 49, 51, 0.15)"} 
                                   strokeWidth={isLineActive ? "2.5" : "1.5"} 
                                   fill="none" 
                                   strokeDasharray={isLineActive ? "6, 4" : "none"}
@@ -861,7 +889,7 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
                         {/* Solid connector path */}
                         <path 
                           d={pathData} 
-                          stroke={isPathHighlighted ? "url(#activeLine)" : "rgba(255, 255, 255, 0.22)"} 
+                          stroke={isPathHighlighted ? "url(#activeLine)" : "rgba(51, 49, 51, 0.15)"} 
                           strokeWidth={isPathHighlighted ? "2.5" : "1.5"} 
                           fill="none" 
                           strokeDasharray={isPathHighlighted ? "6, 4" : "none"}
@@ -930,15 +958,16 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
                   >
                     {/* User starting point flag */}
                     {isUserStart && (
-                      <div className="absolute -top-7 left-3 z-30 bg-amber-500 text-slate-950 text-[9px] font-bold px-2 py-0.5 rounded-full border border-amber-400 shadow-lg flex items-center gap-1 uppercase tracking-wide animate-bounce">
-                        <span className="h-1.5 w-1.5 rounded-full bg-slate-950" />
-                        Tu perfil base
+                      <div className="absolute -top-7 left-3 z-30 bg-amber-500 text-brand-charcoal text-[9px] font-mono font-bold px-2 py-0.5 border-2 border-brand-charcoal shadow-[2px_2px_0px_rgba(51,49,51,1)] flex items-center gap-1 uppercase tracking-wide">
+                        <span className="h-1.5 w-1.5 rounded-full bg-brand-charcoal" />
+                        Tu punto base
                       </div>
                     )}
 
                     <div className={styles.card}>
+                      <CornerCuts size={8} color="text-brand-bg" />
                       <div className="flex items-start justify-between">
-                        <span className={`text-[8px] font-mono uppercase font-bold tracking-wider border px-1.5 py-0.5 rounded ${styles.badge}`}>
+                        <span className={`text-[8px] font-mono uppercase font-black tracking-wider border-2 px-1.5 py-0.5 ${styles.badge}`}>
                           {node.type}
                         </span>
 
@@ -950,28 +979,28 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
                             const nextStatus = currentStatus === 'no_iniciado' ? 'en_progreso' : currentStatus === 'en_progreso' ? 'aprendido' : 'no_iniciado';
                             updateNodeStatus(node.id, nextStatus);
                           }}
-                          className="p-0.5 rounded-md hover:bg-white/5 transition-colors cursor-pointer"
+                          className="p-0.5 rounded border border-brand-charcoal/20 hover:border-brand-charcoal bg-white transition-all cursor-pointer"
                         >
                           {currentStatus === 'aprendido' ? (
-                            <div className="h-4 w-4 rounded-full bg-emerald-500 flex items-center justify-center text-slate-950 border border-emerald-400">
+                            <div className="h-3.5 w-3.5 bg-emerald-500 border border-brand-charcoal flex items-center justify-center text-white">
                               <Check className="h-2.5 w-2.5 stroke-[3]" />
                             </div>
                           ) : currentStatus === 'en_progreso' ? (
-                            <span className="h-3 w-3 rounded-full bg-blue-400 animate-pulse border border-white/20 flex items-center justify-center" />
+                            <span className="h-3.5 w-3.5 border border-brand-charcoal bg-brand-blue animate-pulse block" />
                           ) : (
-                            <span className="h-3 w-3 rounded-full bg-slate-800 border border-slate-700 hover:border-slate-500 block" />
+                            <span className="h-3.5 w-3.5 border border-brand-charcoal/20 bg-white block" />
                           )}
                         </button>
                       </div>
 
                       <div>
-                        <p className="text-[11px] font-extrabold text-white leading-snug line-clamp-2 pr-1">{node.title}</p>
+                        <p className="text-[11px] font-black text-brand-charcoal leading-snug line-clamp-2 pr-1">{node.title}</p>
                       </div>
 
-                      <div className="flex justify-between items-center border-t border-[rgba(255,255,255,0.04)] pt-1.5 text-[8.5px] text-gray-500 font-mono">
-                        <span className="capitalize">{node.priority}</span>
-                        <span className="text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-0.5">
-                          Ver detalles <ArrowRight className="h-2.5 w-2.5" />
+                      <div className="flex justify-between items-center border-t-2 border-brand-charcoal/10 pt-1.5 text-[8.5px] text-brand-charcoal/60 font-mono font-bold uppercase">
+                        <span className="text-[7.5px]">{node.priority}</span>
+                        <span className="text-brand-blue hover:text-brand-blue/80 font-black flex items-center gap-0.5">
+                          Detalles <ArrowRight className="h-2.5 w-2.5" />
                         </span>
                       </div>
                     </div>
@@ -1079,25 +1108,25 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
             </div>
 
             {/* WHITEBOARD CONTROLS FLOATING PANEL (HUD) */}
-            <div className="absolute bottom-4 left-4 z-30 bg-[#0d1222]/90 border border-[rgba(255,255,255,0.1)] rounded-2xl p-2 flex items-center gap-1 shadow-2xl backdrop-blur-md">
+            <div className="absolute bottom-4 left-4 z-30 bg-white border-2 border-brand-charcoal rounded-none p-2 flex items-center gap-1 shadow-[3px_3px_0px_rgba(51,49,51,1)]">
               <button
                 onClick={() => setZoom(z => Math.min(z + 0.1, 1.4))}
                 title="Acercar"
-                className="p-2 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-colors cursor-pointer"
+                className="p-2 text-brand-charcoal hover:text-brand-blue transition-colors cursor-pointer"
               >
                 <ZoomIn className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setZoom(z => Math.max(z - 0.1, 0.35))}
                 title="Alejar"
-                className="p-2 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-colors cursor-pointer"
+                className="p-2 text-brand-charcoal hover:text-brand-blue transition-colors cursor-pointer"
               >
                 <ZoomOut className="h-4 w-4" />
               </button>
               <button
                 onClick={() => centerOnNode('dynamic-base')}
                 title="Centrar en Base"
-                className="p-2 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1 text-[10px] font-mono uppercase font-bold"
+                className="p-2 text-brand-charcoal hover:text-brand-blue transition-colors cursor-pointer flex items-center gap-1 text-[10px] font-mono uppercase font-bold"
               >
                 <Maximize2 className="h-4 w-4" />
                 <span>Enfocar</span>
@@ -1105,71 +1134,72 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
               <button
                 onClick={resetToFitAll}
                 title="Ver Mapa Completo"
-                className="p-2 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-colors cursor-pointer text-[10px] font-mono uppercase font-bold"
+                className="p-2 text-brand-charcoal hover:text-brand-blue transition-colors cursor-pointer text-[10px] font-mono uppercase font-bold"
               >
                 Ajustar
               </button>
 
-              <div className="h-4 w-px bg-white/10 mx-1" />
+              <div className="h-4 w-px bg-brand-charcoal/20 mx-1" />
               
-              <span className="text-[9px] text-gray-400 font-mono px-1">
+              <span className="text-[9px] text-brand-charcoal font-mono px-1 font-bold">
                 Zoom: {Math.round(zoom * 100)}%
               </span>
             </div>
 
             {/* NAVIGATION HELPER INSTRUCTIONS */}
-            <div className="absolute bottom-4 right-4 z-30 pointer-events-none bg-black/60 border border-[rgba(255,255,255,0.04)] px-3 py-1.5 rounded-xl text-[9px] text-gray-400 font-mono flex items-center gap-1.5 backdrop-blur-sm">
-              <Move className="h-3 w-3 text-indigo-400" />
+            <div className="absolute bottom-4 right-4 z-30 pointer-events-none bg-white border-2 border-brand-charcoal px-3 py-1.5 text-[9px] text-brand-charcoal/70 font-mono font-bold flex items-center gap-1.5">
+              <Move className="h-3 w-3 text-brand-blue" />
               <span>Arrastra fondo para moverte · Scroll para zoom</span>
             </div>
           </div>
         </div>
 
         {/* DETAILS INSPECTOR PANEL (PLACED BELOW WHITEBOARD IN FULL WIDTH) */}
-        <div className="w-full bg-[#0d121f] border border-[rgba(255,255,255,0.06)] rounded-3xl p-6 sm:p-8 shadow-2xl mt-4 flex flex-col justify-between">
+        <div className="w-full bg-white border-2 border-brand-charcoal rounded-none p-6 sm:p-8 shadow-[6px_6px_0px_rgba(51,49,51,1)] mt-4 flex flex-col justify-between relative overflow-hidden">
+          <CornerCuts size={16} color="text-brand-bg" />
           <div>
             
             {/* Header of Inspector */}
-            <div className="border-b border-[rgba(255,255,255,0.06)] pb-5 mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="border-b-2 border-brand-charcoal/10 pb-5 mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-indigo-400 block mb-1 flex items-center gap-1.5">
-                  <Info className="h-3.5 w-3.5 text-indigo-400" /> Inspector de Puesto / Skill
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-blue block mb-1 flex items-center gap-1.5">
+                  <Info className="h-3.5 w-3.5 text-brand-blue" /> [ INSPECTOR DE PUESTO / SKILL ]
                 </span>
-                <h3 className="text-base sm:text-2xl font-black text-white leading-tight">
+                <h3 className="text-base sm:text-2xl font-black text-brand-charcoal uppercase leading-tight">
                   {selectedNode.title}
                 </h3>
               </div>
-              <span className={`text-[9px] uppercase tracking-wide font-mono font-bold px-3 py-1 rounded border shrink-0 w-fit ${getNodeColorClasses(selectedNode.type, false).badge}`}>
+              <span className={`text-[9px] uppercase tracking-wide font-mono font-black px-3 py-1 border-2 shrink-0 w-fit ${getNodeColorClasses(selectedNode.type, false).badge}`}>
                 {selectedNode.type}
               </span>
             </div>
 
             {/* Quick Learning Status Control */}
-            <div className="bg-[#111827]/60 border border-[rgba(255,255,255,0.04)] rounded-2xl p-3.5 mb-5">
-              <span className="text-[10px] text-gray-400 font-mono block mb-2 uppercase tracking-wide">Actualizar tu progreso:</span>
+            <div className="bg-brand-bg border-2 border-brand-charcoal rounded-none p-3.5 mb-5">
+              <span className="text-[10px] text-brand-charcoal/60 font-mono font-bold block mb-2 uppercase tracking-wide">// ACTUALIZAR TU PROGRESO:</span>
               
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-3 gap-1.5 select-none">
                 {(['no_iniciado', 'en_progreso', 'aprendido'] as const).map((st) => {
                   const isActive = (nodeStatuses[selectedNode.id] || 'no_iniciado') === st;
                   let stLabel = 'Pendiente';
-                  let activeClass = 'bg-slate-800 text-gray-300 border-slate-700';
+                  let activeClass = 'bg-[#FFFFFF] text-brand-charcoal border-brand-charcoal';
 
                   if (st === 'en_progreso') {
                     stLabel = 'En curso';
-                    activeClass = 'bg-blue-900/30 text-blue-300 border-blue-500/45 shadow-sm shadow-blue-500/10';
+                    activeClass = 'bg-brand-light-blue text-brand-blue border-brand-blue';
                   } else if (st === 'aprendido') {
                     stLabel = 'Aprendido';
-                    activeClass = 'bg-emerald-900/30 text-emerald-300 border-emerald-500/45 shadow-sm shadow-emerald-500/10';
+                    activeClass = 'bg-emerald-100 text-emerald-700 border-emerald-500';
                   }
 
                   return (
                     <button
                       key={st}
                       onClick={() => updateNodeStatus(selectedNode.id, st)}
-                      className={`px-1.5 py-2 rounded-xl text-[10px] font-bold border transition-all text-center cursor-pointer ${
+                      className={`px-1.5 py-2 text-[10px] font-mono font-black uppercase border-2 transition-all text-center cursor-pointer ${
                         isActive 
-                          ? activeClass
-                          : 'bg-slate-900/40 text-slate-500 border-slate-800/60 hover:text-slate-300 hover:border-slate-700'
+                          ? activeClass + ' shadow-[1px_1px_0px_rgba(51,49,51,1)]'
+                          : 'bg-white text-brand-charcoal/50 border-brand-charcoal/30 hover:text-brand-charcoal hover:border-brand-charcoal'
                       }`}
                     >
                       {st === 'aprendido' && isActive ? '✓ ' : ''}
@@ -1181,326 +1211,321 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
             </div>
 
             {/* General Descriptions & Multi-Industry Contexts */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start mt-6 pt-6 border-t border-[rgba(255,255,255,0.06)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start mt-6 pt-6 border-t-2 border-brand-charcoal/10">
               
               {/* COL 1: VISIÓN GENERAL E IMPORTANCIA */}
               <div className="space-y-5">
-              <div>
-                <span className="text-[10px] text-gray-500 font-mono uppercase tracking-wide block mb-1">¿Qué es esta habilidad / puesto?</span>
-                <p className="text-xs text-slate-300 leading-relaxed bg-slate-900/30 p-3 rounded-xl border border-[rgba(255,255,255,0.03)]">
-                  {selectedNode.description}
-                </p>
-              </div>
-
-              <div>
-                <span className="text-[10px] text-indigo-400 font-mono uppercase tracking-wide block mb-1 font-bold">¿Por qué es fundamental en el mercado real?</span>
-                <p className="text-xs text-slate-300 leading-relaxed bg-indigo-500/5 p-3 rounded-xl border border-indigo-500/10">
-                  {selectedNode.whyItMatters}
-                </p>
-              </div>
-
-              {/* ¿Cómo desarrollar esta habilidad / prepararse? */}
-              {selectedNode.howToDevelop && (
-                <div className="pt-2 border-t border-[rgba(255,255,255,0.06)]">
-                  <span className="text-[10px] text-emerald-400 font-mono uppercase tracking-wide block mb-1.5 font-bold flex items-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5 text-emerald-400" /> ¿Cómo desarrollar esta habilidad?
-                  </span>
-                  <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-3 text-xs text-slate-300 leading-relaxed whitespace-pre-line">
-                    {selectedNode.howToDevelop}
-                  </div>
+                <div>
+                  <span className="text-[10px] text-brand-charcoal/50 font-mono uppercase font-bold tracking-wide block mb-1.5">[ ¿Qué es esta habilidad / puesto? ]</span>
+                  <p className="text-xs text-brand-charcoal/80 leading-relaxed bg-brand-bg p-3 border border-brand-charcoal/10 font-medium">
+                    {selectedNode.description}
+                  </p>
                 </div>
-              )}
 
+                <div>
+                  <span className="text-[10px] text-brand-blue font-mono uppercase tracking-wide block mb-1.5 font-black">[ ¿Por qué es fundamental? ]</span>
+                  <p className="text-xs text-brand-charcoal/80 leading-relaxed bg-brand-light-blue/20 p-3 border border-brand-blue/20 font-medium">
+                    {selectedNode.whyItMatters}
+                  </p>
+                </div>
+
+                {/* ¿Cómo desarrollar esta habilidad / prepararse? */}
+                {selectedNode.howToDevelop && (
+                  <div className="pt-2 border-t-2 border-brand-charcoal/10">
+                    <span className="text-[10px] text-emerald-600 font-mono uppercase tracking-wide block mb-1.5 font-black flex items-center gap-1.5">
+                      <Sparkles className="h-3.5 w-3.5 text-emerald-600" /> [ ¿Cómo desarrollar la habilidad? ]
+                    </span>
+                    <div className="bg-emerald-50/30 border border-emerald-500/20 rounded-none p-3 text-xs text-brand-charcoal/80 leading-relaxed whitespace-pre-line font-medium">
+                      {selectedNode.howToDevelop}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* COL 2: COMPETENCIAS Y TRANSICIÓN */}
               <div className="space-y-5">
-                {/* HABILIDADES REQUERIDAS (TÉCNICO & BLANDO) PARA RAMAS Y ROLES */}
+                {/* HABILIDADES REQUERIDAS (TÉCNICO & BLANDO) */}
                 {(selectedNode.requiredTechSkills || selectedNode.requiredSoftSkills) && (
-                <div className="pt-2 border-t border-[rgba(255,255,255,0.06)] space-y-2">
-                  <span className="text-[10px] text-indigo-400 font-mono uppercase tracking-wide block mb-1 font-bold flex items-center gap-1.5">
-                    <Briefcase className="h-3.5 w-3.5 text-indigo-400" /> Perfil Competencial Requerido:
-                  </span>
-                  
-                  {selectedNode.requiredTechSkills && (
-                    <div className="bg-slate-900/50 border border-[rgba(255,255,255,0.03)] rounded-xl p-3">
-                      <span className="text-[9px] text-indigo-300 font-mono uppercase font-bold block mb-1">🛠️ Habilidades Técnicas Clave:</span>
-                      <p className="text-[11.5px] text-slate-300 leading-relaxed">
-                        {selectedNode.requiredTechSkills}
-                      </p>
-                    </div>
-                  )}
-
-                  {selectedNode.requiredSoftSkills && (
-                    <div className="bg-slate-900/50 border border-[rgba(255,255,255,0.03)] rounded-xl p-3">
-                      <span className="text-[9px] text-fuchsia-300 font-mono uppercase font-bold block mb-1">💬 Habilidades Blandas Clave:</span>
-                      <p className="text-[11.5px] text-slate-300 leading-relaxed">
-                        {selectedNode.requiredSoftSkills}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* REQUISITOS Y PREPARACIÓN ESPECÍFICA PARA PRÁCTICAS */}
-              {selectedNode.level === 'práctica' && (
-                <div className="pt-2 border-t border-[rgba(255,255,255,0.06)] space-y-2">
-                  <span className="text-[10px] text-amber-400 font-mono uppercase tracking-wide block mb-1 font-bold flex items-center gap-1.5">
-                    <GraduationCap className="h-3.5 w-3.5 text-amber-400" /> Preparación Crítica para Prácticas:
-                  </span>
-
-                  {selectedNode.practicePrepWork && (
-                    <div className="bg-amber-500/5 border border-amber-500/10 rounded-xl p-3">
-                      <span className="text-[9px] text-amber-300 font-mono uppercase font-bold block mb-1">🎯 Qué debes haber desarrollado para calificar:</span>
-                      <p className="text-[11px] text-slate-300 leading-relaxed">
-                        {selectedNode.practicePrepWork}
-                      </p>
-                    </div>
-                  )}
-
-                  {selectedNode.practicePrepTools && selectedNode.practicePrepTools.length > 0 && (
-                    <div className="bg-slate-900/50 border border-[rgba(255,255,255,0.03)] rounded-xl p-3">
-                      <span className="text-[9px] text-cyan-300 font-mono uppercase font-bold block mb-2">💻 Herramientas Digitales de Trabajo (Específicas del sector):</span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {selectedNode.practicePrepTools.map((tool) => (
-                          <span key={tool} className="text-[10px] text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded font-mono">
-                            {tool}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* BRECHA DE APRENDIZAJE: DE PRACTICANTE A JUNIOR */}
-              {selectedNode.level === 'práctica' && selectedNode.transitionGap && selectedNode.transitionGap.length > 0 && (
-                <div className="pt-3 border-t border-[rgba(255,255,255,0.06)] space-y-3">
-                  <span className="text-[10px] text-emerald-400 font-mono uppercase tracking-wide font-bold flex items-center gap-1.5 mb-1">
-                    <Sparkles className="h-3.5 w-3.5 text-emerald-400 animate-pulse" /> Brecha para Ascender a Junior:
-                  </span>
-
-                  <p className="text-[11px] text-slate-400 leading-normal mb-1">
-                    Para dar el salto al puesto Junior, debes adquirir estas {selectedNode.transitionGap.length} habilidades y herramientas críticas durante tus prácticas:
-                  </p>
-
-                  {/* Dashboard-style Radial Progress Gauge Side-by-Side */}
-                  <div className="flex items-center gap-4 bg-[#101726]/60 border border-emerald-500/10 rounded-2xl p-3.5 shadow-lg relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
+                  <div className="pt-2 border-t-2 border-brand-charcoal/10 space-y-2.5">
+                    <span className="text-[10px] text-brand-charcoal font-mono uppercase tracking-wide block mb-1.5 font-black flex items-center gap-1.5">
+                      <Briefcase className="h-3.5 w-3.5 text-brand-blue" /> [ Perfil Competencial Requerido ]
+                    </span>
                     
-                    {/* Radial SVG Gauge */}
-                    <div className="relative flex-shrink-0 flex items-center justify-center w-20 h-20 bg-slate-950/40 rounded-full border border-white/5 shadow-inner">
-                      <svg className="w-full h-full transform -rotate-90">
-                        {/* Track */}
-                        <circle
-                          cx="40"
-                          cy="40"
-                          r="32"
-                          className="stroke-slate-800/60"
-                          strokeWidth="6"
-                          fill="transparent"
-                        />
-                        {/* Fill */}
-                        <circle
-                          cx="40"
-                          cy="40"
-                          r="32"
-                          className="stroke-emerald-400 transition-all duration-700 ease-out"
-                          strokeWidth="6"
-                          strokeDasharray={201.1}
-                          strokeDashoffset={201.1 - (201.1 * Math.round(((masteredTransitionGaps[selectedNode.id] || []).length / selectedNode.transitionGap.length) * 100)) / 100}
-                          strokeLinecap="round"
-                          fill="transparent"
-                          filter="drop-shadow(0 0 3px rgba(52, 211, 153, 0.4))"
-                        />
-                      </svg>
-                      {/* Inner Text */}
-                      <div className="absolute flex flex-col items-center justify-center">
-                        <span className="text-sm sm:text-base font-black text-white font-mono leading-none">
-                          {Math.round(((masteredTransitionGaps[selectedNode.id] || []).length / selectedNode.transitionGap.length) * 100)}%
+                    {selectedNode.requiredTechSkills && (
+                      <div className="bg-brand-bg border border-brand-charcoal/10 p-3">
+                        <span className="text-[9px] text-brand-blue font-mono uppercase font-black block mb-1">// Habilidades Técnicas:</span>
+                        <p className="text-[11px] text-brand-charcoal/80 leading-relaxed font-medium">
+                          {selectedNode.requiredTechSkills}
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedNode.requiredSoftSkills && (
+                      <div className="bg-brand-bg border border-brand-charcoal/10 p-3">
+                        <span className="text-[9px] text-pink-600 font-mono uppercase font-black block mb-1">// Habilidades Blandas:</span>
+                        <p className="text-[11px] text-brand-charcoal/80 leading-relaxed font-medium">
+                          {selectedNode.requiredSoftSkills}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* REQUISITOS Y PREPARACIÓN ESPECÍFICA PARA PRÁCTICAS */}
+                {selectedNode.level === 'práctica' && (
+                  <div className="pt-2 border-t-2 border-brand-charcoal/10 space-y-2.5">
+                    <span className="text-[10px] text-amber-600 font-mono uppercase tracking-wide block mb-1.5 font-black flex items-center gap-1.5">
+                      <GraduationCap className="h-3.5 w-3.5 text-amber-500" /> [ Preparación para Prácticas ]
+                    </span>
+
+                    {selectedNode.practicePrepWork && (
+                      <div className="bg-amber-5/30 border border-amber-500/20 p-3">
+                        <span className="text-[9px] text-amber-600 font-mono uppercase font-black block mb-1">// Qué desarrollar para calificar:</span>
+                        <p className="text-[11px] text-brand-charcoal/80 leading-relaxed font-medium">
+                          {selectedNode.practicePrepWork}
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedNode.practicePrepTools && selectedNode.practicePrepTools.length > 0 && (
+                      <div className="bg-brand-bg border border-brand-charcoal/10 p-3">
+                        <span className="text-[9px] text-cyan-600 font-mono uppercase font-black block mb-2">// Herramientas Digitales:</span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {selectedNode.practicePrepTools.map((tool) => (
+                            <span key={tool} className="text-[10px] text-cyan-600 bg-cyan-500/10 border border-cyan-500/30 px-2 py-0.5 font-mono font-bold">
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* BRECHA DE APRENDIZAJE: DE PRACTICANTE A JUNIOR */}
+                {selectedNode.level === 'práctica' && selectedNode.transitionGap && selectedNode.transitionGap.length > 0 && (
+                  <div className="pt-3 border-t-2 border-brand-charcoal/10 space-y-3">
+                    <span className="text-[10px] text-emerald-600 font-mono uppercase tracking-wide font-black flex items-center gap-1.5 mb-1">
+                      <Sparkles className="h-3.5 w-3.5 text-emerald-500 animate-pulse" /> [ Brecha para Ascender a Junior ]
+                    </span>
+
+                    <p className="text-[11px] text-brand-charcoal/70 leading-normal mb-1 font-medium">
+                      Para dar el salto al puesto Junior, debes adquirir estas {selectedNode.transitionGap.length} habilidades críticas durante tus prácticas:
+                    </p>
+
+                    {/* Gauge metrics */}
+                    <div className="flex items-center gap-4 bg-emerald-50/20 border border-emerald-500/20 p-3.5">
+                      {/* Radial SVG Gauge */}
+                      <div className="relative flex-shrink-0 flex items-center justify-center w-20 h-20 bg-white border border-brand-charcoal/10 rounded-full">
+                        <svg className="w-full h-full transform -rotate-90">
+                          {/* Track */}
+                          <circle
+                            cx="40"
+                            cy="40"
+                            r="32"
+                            className="stroke-brand-charcoal/10"
+                            strokeWidth="6"
+                            fill="transparent"
+                          />
+                          {/* Fill */}
+                          <circle
+                            cx="40"
+                            cy="40"
+                            r="32"
+                            className="stroke-emerald-500 transition-all duration-700 ease-out"
+                            strokeWidth="6"
+                            strokeDasharray={201.1}
+                            strokeDashoffset={201.1 - (201.1 * Math.round(((masteredTransitionGaps[selectedNode.id] || []).length / selectedNode.transitionGap.length) * 100)) / 100}
+                            strokeLinecap="round"
+                            fill="transparent"
+                          />
+                        </svg>
+                        {/* Inner Text */}
+                        <div className="absolute flex flex-col items-center justify-center select-none">
+                          <span className="text-sm sm:text-base font-black text-brand-charcoal font-mono leading-none">
+                            {Math.round(((masteredTransitionGaps[selectedNode.id] || []).length / selectedNode.transitionGap.length) * 100)}%
+                          </span>
+                          <span className="text-[8px] text-emerald-600 font-mono font-bold mt-0.5 uppercase tracking-tight">
+                            Listo
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Metric labels & text */}
+                      <div className="flex-1 space-y-1">
+                        <span className="text-[9px] text-emerald-600 font-mono uppercase tracking-wider font-bold">
+                          PROGRESO DE BRECHA
                         </span>
-                        <span className="text-[8px] text-emerald-400 font-mono mt-0.5 uppercase tracking-tight scale-90">
-                          Listo
-                        </span>
+                        <h4 className="text-[12px] font-black text-brand-charcoal leading-tight">
+                          {(masteredTransitionGaps[selectedNode.id] || []).length} de {selectedNode.transitionGap.length} Dominados
+                        </h4>
+                        <p className="text-[10px] text-brand-charcoal/60 leading-snug font-medium">
+                          {Math.round(((masteredTransitionGaps[selectedNode.id] || []).length / selectedNode.transitionGap.length) * 100) === 100
+                            ? "¡Excelente! Has cerrado toda la brecha."
+                            : "Domina las habilidades para calificar."}
+                        </p>
                       </div>
                     </div>
 
-                    {/* Metric labels & text */}
-                    <div className="flex-1 space-y-1">
-                      <span className="text-[9px] text-emerald-400 font-mono uppercase tracking-wider font-bold">
-                        Medidor de Progreso
-                      </span>
-                      <h4 className="text-[12px] font-bold text-white leading-tight">
-                        {(masteredTransitionGaps[selectedNode.id] || []).length} de {selectedNode.transitionGap.length} Dominados
-                      </h4>
-                      <p className="text-[10px] text-slate-400 leading-snug">
-                        {Math.round(((masteredTransitionGaps[selectedNode.id] || []).length / selectedNode.transitionGap.length) * 100) === 100
-                          ? "¡Felicidades! Has cerrado toda la brecha para el perfil Junior."
-                          : "Domina las habilidades abajo para calificar al ascenso."}
-                      </p>
+                    {/* Interactive Cards for each Gap */}
+                    <div className="space-y-2 pt-1">
+                      {selectedNode.transitionGap.map((gap) => {
+                        const isMastered = (masteredTransitionGaps[selectedNode.id] || []).includes(gap.name);
+                        
+                        // Type config
+                        const typeConfig = {
+                          herramienta: {
+                            bg: 'bg-white border-cyan-500/20 hover:border-cyan-500/40',
+                            badge: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20',
+                            label: '🛠️ Herramienta',
+                          },
+                          técnica: {
+                            bg: 'bg-white border-indigo-500/20 hover:border-indigo-500/40',
+                            badge: 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20',
+                            label: '⚡ Técnica',
+                          },
+                          blanda: {
+                            bg: 'bg-white border-pink-500/20 hover:border-pink-500/40',
+                            badge: 'bg-pink-500/10 text-pink-600 border-pink-500/20',
+                            label: '💬 Blanda',
+                          }
+                        }[gap.type] || {
+                          bg: 'bg-white border-brand-charcoal/20',
+                          badge: 'bg-brand-bg text-brand-charcoal border-brand-charcoal/20',
+                          label: 'Habilidad',
+                        };
+
+                        return (
+                          <div
+                            key={gap.name}
+                            className={`transition-all duration-300 rounded-none p-3 border-2 ${
+                              isMastered 
+                                ? 'bg-emerald-50 border-emerald-500 text-emerald-800' 
+                                : typeConfig.bg + ' border-brand-charcoal/30'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="space-y-1 flex-1">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className={`text-[9px] px-1.5 py-0.5 rounded border font-mono font-bold uppercase ${
+                                    isMastered ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : typeConfig.badge
+                                  }`}>
+                                    {typeConfig.label}
+                                  </span>
+                                  <span className={`text-[12px] font-black uppercase ${isMastered ? 'text-emerald-700 line-through' : 'text-brand-charcoal'}`}>
+                                    {gap.name}
+                                  </span>
+                                </div>
+                                <p className={`text-[11px] leading-relaxed font-medium ${isMastered ? 'text-emerald-600/80' : 'text-brand-charcoal/70'}`}>
+                                  {gap.desc}
+                                </p>
+                              </div>
+                              <button
+                                onClick={() => toggleGapMastered(selectedNode.id, gap.name)}
+                                className={`flex-shrink-0 w-5.5 h-5.5 rounded border-2 border-brand-charcoal flex items-center justify-center transition-all duration-300 cursor-pointer ${
+                                  isMastered
+                                    ? 'bg-emerald-500 text-white'
+                                    : 'bg-white text-brand-charcoal/30 hover:text-brand-blue hover:border-brand-blue'
+                                }`}
+                                title={isMastered ? "Marcar como pendiente" : "Marcar como dominado"}
+                              >
+                                {isMastered ? (
+                                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                  </svg>
+                                ) : (
+                                  <span className="text-xs font-bold font-mono">+</span>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-
-                  {/* Interactive Cards for each Gap */}
-                  <div className="space-y-2 pt-1">
-                    {selectedNode.transitionGap.map((gap) => {
-                      const isMastered = (masteredTransitionGaps[selectedNode.id] || []).includes(gap.name);
-                      
-                      // Type config
-                      const typeConfig = {
-                        herramienta: {
-                          bg: 'bg-cyan-500/5 hover:bg-cyan-500/10 border-cyan-500/10 hover:border-cyan-500/20',
-                          badge: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20',
-                          label: '🛠️ Herramienta',
-                        },
-                        técnica: {
-                          bg: 'bg-indigo-500/5 hover:bg-indigo-500/10 border-indigo-500/10 hover:border-indigo-500/20',
-                          badge: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20',
-                          label: '⚡ Técnica',
-                        },
-                        blanda: {
-                          bg: 'bg-fuchsia-500/5 hover:bg-fuchsia-500/10 border-fuchsia-500/10 hover:border-fuchsia-500/20',
-                          badge: 'bg-fuchsia-500/10 text-fuchsia-300 border-fuchsia-500/20',
-                          label: '💬 Blanda',
-                        }
-                      }[gap.type] || {
-                        bg: 'bg-slate-500/5 border-slate-500/10',
-                        badge: 'bg-slate-500/10 text-slate-300 border-slate-500/20',
-                        label: 'Habilidad',
-                      };
-
-                      return (
-                        <div
-                          key={gap.name}
-                          className={`transition-all duration-300 rounded-xl p-3 border ${
-                            isMastered 
-                              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-100 shadow-lg shadow-emerald-950/20' 
-                              : typeConfig.bg
-                          }`}
-                        >
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="space-y-1 flex-1">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <span className={`text-[9px] px-1.5 py-0.5 rounded border font-mono font-bold uppercase ${
-                                  isMastered ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : typeConfig.badge
-                                }`}>
-                                  {typeConfig.label}
-                                </span>
-                                <span className={`text-[12px] font-bold ${isMastered ? 'text-emerald-300 line-through' : 'text-slate-200'}`}>
-                                  {gap.name}
-                                </span>
-                              </div>
-                              <p className={`text-[11px] leading-relaxed ${isMastered ? 'text-emerald-400/80' : 'text-slate-300'}`}>
-                                {gap.desc}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() => toggleGapMastered(selectedNode.id, gap.name)}
-                              className={`flex-shrink-0 w-6 h-6 rounded-lg border flex items-center justify-center transition-all duration-300 ${
-                                isMastered
-                                  ? 'bg-emerald-500 border-emerald-400 text-slate-950 hover:bg-emerald-400'
-                                  : 'bg-slate-950 border-[rgba(255,255,255,0.1)] hover:border-emerald-500 text-slate-500 hover:text-emerald-400'
-                              }`}
-                              title={isMastered ? "Marcar como pendiente" : "Marcar como dominado"}
-                            >
-                              {isMastered ? (
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                                </svg>
-                              ) : (
-                                <span className="text-xs font-bold">+</span>
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
+                )}
               </div>
 
               {/* COL 3: ENTORNO LABORAL, PROYECTOS Y REQUISITOS */}
               <div className="space-y-5">
                 {/* DYNAMIC INDUSTRIAL VARIATION CONTEXTS */}
                 {selectedNode.industries && selectedNode.industries.length > 0 && (
-                <div className="pt-2 border-t border-[rgba(255,255,255,0.06)]">
-                  <span className="text-[10px] text-fuchsia-400 font-mono uppercase tracking-wide block mb-2 font-bold flex items-center gap-1">
-                    🌐 Cómo varía el rol según la Industria:
-                  </span>
-                  <div className="space-y-2">
-                    {selectedNode.industries.map((ind) => (
-                      <div key={ind.name} className="bg-fuchsia-500/5 border border-fuchsia-500/10 rounded-xl p-2.5">
-                        <span className="text-[10px] font-bold text-fuchsia-300 block mb-0.5">🏢 En {ind.name}:</span>
-                        <p className="text-[10.5px] text-slate-300 leading-normal">{ind.detail}</p>
+                  <div className="pt-2 border-t-2 border-brand-charcoal/10">
+                    <span className="text-[10px] text-brand-charcoal/50 font-mono uppercase tracking-wide block mb-2 font-black">
+                      // Variación según la industria:
+                    </span>
+                    <div className="space-y-2">
+                      {selectedNode.industries.map((ind) => (
+                        <div key={ind.name} className="bg-brand-bg border border-brand-charcoal/10 p-2.5">
+                          <span className="text-[10px] font-black text-brand-blue block mb-0.5 font-mono">🏢 EN {ind.name.toUpperCase()}:</span>
+                          <p className="text-[10.5px] text-brand-charcoal/80 leading-normal font-medium">{ind.detail}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Contextualized skills & tools */}
+                {selectedNode.relatedTools && selectedNode.relatedTools.length > 0 && (
+                  <div className="pt-2 border-t-2 border-brand-charcoal/10">
+                    <span className="text-[10px] text-brand-charcoal/50 font-mono uppercase tracking-wide block mb-1.5 font-bold">Herramientas asociadas:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedNode.relatedTools.map((tool) => (
+                        <span key={tool} className="text-[10px] text-cyan-600 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-1 font-mono font-bold flex items-center gap-1">
+                          <Wrench className="h-2.5 w-2.5" /> {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Suggested Portafolio Project */}
+                {selectedNode.suggestedProject && (
+                  <div className="pt-2 border-t-2 border-brand-charcoal/10">
+                    <div className="flex items-center gap-1 mb-1.5 text-emerald-600">
+                      <FileText className="h-3.5 w-3.5" />
+                      <span className="text-[10px] font-mono uppercase tracking-wide font-black">[ PROYECTO DE CV RECOMENDADO ]</span>
+                    </div>
+                    <div className="bg-emerald-50/10 border border-emerald-500/20 p-3">
+                      <p className="text-xs text-brand-charcoal/80 leading-relaxed font-medium">
+                        {selectedNode.suggestedProject}
+                      </p>
+                      <p className="text-[9px] text-brand-charcoal/50 mt-2 italic leading-relaxed font-medium font-mono">
+                        💡 Consejo: Agrega este entregable a tu portafolio o Git para certificar tu dominio técnico.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Requirements & Milestones */}
+                {(selectedNode.practiceReq || selectedNode.juniorReq) && (
+                  <div className="pt-3 border-t-2 border-brand-charcoal/10 space-y-2">
+                    <span className="text-[10px] text-brand-charcoal/50 font-mono uppercase tracking-wide block mb-1 font-bold">Requisitos de Contratación:</span>
+                    
+                    {selectedNode.practiceReq && (
+                      <div className="text-[10.5px] text-brand-charcoal/80 flex items-start gap-1.5 font-medium">
+                        <span className="text-amber-500 mt-0.5">▪</span>
+                        <span><strong className="text-amber-600 font-black">Prácticas:</strong> {selectedNode.practiceReq}</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                    )}
 
-              {/* Contextualized skills & tools */}
-              {selectedNode.relatedTools && selectedNode.relatedTools.length > 0 && (
-                <div className="pt-2 border-t border-[rgba(255,255,255,0.06)]">
-                  <span className="text-[10px] text-gray-400 font-mono uppercase tracking-wide block mb-1.5">Herramientas técnicas asociadas:</span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedNode.relatedTools.map((tool) => (
-                      <span key={tool} className="text-[10px] text-cyan-300 bg-cyan-500/5 border border-cyan-500/10 px-2.5 py-1 rounded-lg font-mono flex items-center gap-1">
-                        <Wrench className="h-2.5 w-2.5" /> {tool}
-                      </span>
-                    ))}
+                    {selectedNode.juniorReq && (
+                      <div className="text-[10.5px] text-brand-charcoal/80 flex items-start gap-1.5 font-medium">
+                        <span className="text-rose-500 mt-0.5">▪</span>
+                        <span><strong className="text-rose-500 font-black">Puesto Junior:</strong> {selectedNode.juniorReq}</span>
+                      </div>
+                    )}
                   </div>
-                </div>
-              )}
-
-              {/* Suggested Portafolio Project */}
-              {selectedNode.suggestedProject && (
-                <div className="pt-2 border-t border-[rgba(255,255,255,0.06)]">
-                  <div className="flex items-center gap-1 mb-1.5 text-emerald-400">
-                    <FileText className="h-3.5 w-3.5" />
-                    <span className="text-[10px] font-mono uppercase tracking-wide font-bold">Proyecto de CV Recomendado:</span>
-                  </div>
-                  <div className="bg-emerald-500/5 border border-emerald-500/15 rounded-xl p-3">
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {selectedNode.suggestedProject}
-                    </p>
-                    <p className="text-[9px] text-slate-500 mt-2 italic leading-relaxed">
-                      💡 Consejo: Agrega este entregable a tu portafolio o Git para certificar tu dominio técnico en tu hoja de vida.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Requirements & Milestones */}
-              {(selectedNode.practiceReq || selectedNode.juniorReq) && (
-                <div className="pt-3 border-t border-[rgba(255,255,255,0.06)] space-y-2">
-                  <span className="text-[10px] text-gray-400 font-mono uppercase tracking-wide block mb-1">Requisitos de Contratación:</span>
-                  
-                  {selectedNode.practiceReq && (
-                    <div className="text-[10.5px] text-slate-300 flex items-start gap-1.5">
-                      <span className="text-amber-400 mt-0.5">▪</span>
-                      <span><strong className="text-amber-400 font-bold">Requisitos de Prácticas:</strong> {selectedNode.practiceReq}</span>
-                    </div>
-                  )}
-
-                  {selectedNode.juniorReq && (
-                    <div className="text-[10.5px] text-slate-300 flex items-start gap-1.5">
-                      <span className="text-rose-400 mt-0.5">▪</span>
-                      <span><strong className="text-rose-400 font-bold">Requisitos de Puesto Junior:</strong> {selectedNode.juniorReq}</span>
-                    </div>
-                  )}
-                </div>
-              )}
+                )}
 
               </div>
             </div>
 
           </div>
 
-          <div className="mt-6 pt-4 border-t border-[rgba(255,255,255,0.06)] bg-[#1e293b]/10 p-3 rounded-2xl border border-[rgba(255,255,255,0.03)] flex flex-col gap-1.5">
-            <span className="text-[10px] text-indigo-400 font-mono font-bold uppercase tracking-wider block">🏆 Tip de Inserción:</span>
-            <span className="text-[10.5px] text-slate-400 leading-normal">
+          <div className="mt-6 pt-4 border-t-2 border-brand-charcoal/10 bg-brand-light-blue/20 p-3.5 border border-brand-blue/10 flex flex-col gap-1.5">
+            <span className="text-[10px] text-brand-blue font-mono font-black uppercase tracking-wider block">🏆 TIP DE INSERCIÓN PROFESIONAL:</span>
+            <span className="text-[10.5px] text-brand-charcoal/70 leading-normal font-medium">
               Domina las herramientas principales y valida tu aprendizaje resolviendo los <strong>Proyectos de CV</strong>. Los reclutadores priorizan perfiles que demuestran destreza autónoma resolviendo casos reales.
             </span>
           </div>
@@ -1511,24 +1536,24 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
 
       {/* 2.5 CAREER PROGRESSION ANALYSIS PANEL - REPOSICIONADO ABAJO DE LA PIZARRA */}
       {customTemplate && customTemplate.careerProgression && customTemplate.careerProgression.length > 0 && (
-        <div className="mt-8 bg-[#0b0f19] border border-indigo-950/50 rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="mt-8 bg-white border-2 border-brand-charcoal rounded-none p-5 sm:p-6 shadow-[6px_6px_0px_rgba(51,49,51,1)] relative overflow-hidden">
+          <CornerCuts size={16} color="text-brand-bg" />
           
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 border-b border-indigo-950/60 pb-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 border-b-2 border-brand-charcoal/10 pb-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <Sparkles className="h-4.5 w-4.5 text-indigo-400" />
-                <h3 className="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono">
-                  Línea de Carrera y Progresión IA (Siguientes Pasos)
+                <Sparkles className="h-4.5 w-4.5 text-brand-blue animate-pulse" />
+                <h3 className="text-sm font-black uppercase tracking-wider text-brand-charcoal font-mono">
+                  [ LÍNEA DE CARRERA Y PROGRESIÓN ESTRATÉGICA CON IA ]
                 </h3>
               </div>
-              <p className="text-xs text-gray-400">
-                Punto de partida analizado: <span className="text-white font-semibold">{onboardingData.currentPosition || 'Puesto de Interés'}</span> ({onboardingData.career}) en <span className="text-indigo-400 font-semibold">{onboardingData.industry}</span>.
+              <p className="text-xs text-brand-charcoal/70 font-medium">
+                Punto de partida analizado: <span className="text-brand-charcoal font-black">{onboardingData.currentPosition || 'Puesto de Interés'}</span> ({onboardingData.career}) en <span className="text-brand-blue font-black">{onboardingData.industry}</span>.
               </p>
             </div>
             {onboardingData.currentPosition && (
-              <span className="text-[10px] text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-3 py-1 font-semibold uppercase tracking-wider w-fit">
-                Análisis Personalizado Activo
+              <span className="text-[9px] font-mono font-black text-brand-blue bg-brand-light-blue border border-brand-blue/30 rounded-none px-3 py-1 uppercase tracking-wider w-fit">
+                Análisis Activo
               </span>
             )}
           </div>
@@ -1536,12 +1561,12 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
           {/* Timeline Cards Container */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative">
             {customTemplate.careerProgression.map((item, idx) => {
-              const borderColors = ['border-purple-500/20', 'border-indigo-500/20', 'border-emerald-500/20'];
-              const textColors = ['text-purple-400', 'text-indigo-400', 'text-emerald-400'];
+              const borderColors = ['border-purple-500', 'border-indigo-500', 'border-emerald-500'];
+              const textColors = ['text-purple-600', 'text-indigo-600', 'text-emerald-600'];
               const bgGradients = [
-                'from-purple-950/10 to-transparent',
-                'from-indigo-950/10 to-transparent',
-                'from-emerald-950/10 to-transparent'
+                'bg-purple-50/10',
+                'bg-indigo-50/10',
+                'bg-emerald-50/10'
               ];
               const borderColor = borderColors[idx % borderColors.length];
               const textColor = textColors[idx % textColors.length];
@@ -1550,42 +1575,43 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
               return (
                 <div 
                   key={idx} 
-                  className={`relative flex flex-col justify-between p-4.5 rounded-2xl border ${borderColor} bg-gradient-to-b ${bgGradient} bg-[#0c101c]/80 hover:border-slate-700 transition-all group`}
+                  className={`relative flex flex-col justify-between p-5 border-2 ${borderColor} ${bgGradient} bg-white shadow-[3px_3px_0px_rgba(51,49,51,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all group overflow-hidden`}
                 >
+                  <CornerCuts size={8} color="text-brand-bg" />
                   {/* Step bubble */}
-                  <div className="absolute -top-3 left-4 bg-slate-950 border border-indigo-500/35 h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold text-indigo-400 font-mono">
+                  <div className="absolute -top-3 left-4 bg-white border-2 border-brand-charcoal h-6 w-6 rounded-none flex items-center justify-center text-[10px] font-black text-brand-charcoal font-mono">
                     {idx + 1}
                   </div>
 
                   <div className="pt-2">
                     {/* Stage Tag */}
-                    <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-500 font-mono">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-brand-charcoal/50 font-mono block">
                       {item.stage || 'Nivel'}
                     </span>
                     
                     {/* Job Title */}
-                    <h4 className={`text-sm sm:text-base font-extrabold text-white mt-1 group-hover:${textColor} transition-colors`}>
+                    <h4 className="text-sm sm:text-base font-black uppercase text-brand-charcoal mt-1 group-hover:text-brand-blue transition-colors">
                       {item.roleTitle}
                     </h4>
 
                     {/* Description */}
-                    <p className="text-xs text-gray-400 mt-2 leading-relaxed">
+                    <p className="text-xs text-brand-charcoal/70 mt-2 leading-relaxed font-medium">
                       {item.description}
                     </p>
                   </div>
 
                   {/* Requirements Sub-sections */}
-                  <div className="mt-5 pt-4 border-t border-[rgba(255,255,255,0.04)] space-y-3.5">
+                  <div className="mt-5 pt-4 border-t-2 border-brand-charcoal/10 space-y-3.5">
                     {/* Skills required */}
                     <div>
-                      <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                        <span>🛠️</span> Habilidades Clave
+                      <span className="text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider block mb-1 flex items-center gap-1">
+                        <span>🛠️</span> Habilidades
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {item.skills.map((skill, sIdx) => (
                           <span 
                             key={sIdx} 
-                            className="text-[9px] bg-slate-900/80 border border-slate-850 px-1.5 py-0.5 rounded text-gray-305"
+                            className="text-[9px] font-mono font-bold bg-brand-bg border border-brand-charcoal/20 px-1.5 py-0.5 text-brand-charcoal"
                           >
                             {skill}
                           </span>
@@ -1595,14 +1621,14 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
 
                     {/* Tools required */}
                     <div>
-                      <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                        <span>💻</span> Herramientas Digitales
+                      <span className="text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider block mb-1 flex items-center gap-1">
+                        <span>💻</span> Herramientas
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {item.tools.map((tool, tIdx) => (
                           <span 
                             key={tIdx} 
-                            className="text-[9px] bg-indigo-950/20 border border-indigo-900/30 px-1.5 py-0.5 rounded text-indigo-300"
+                            className="text-[9px] font-mono font-bold bg-brand-light-blue border border-brand-blue/20 px-1.5 py-0.5 text-brand-blue"
                           >
                             {tool}
                           </span>
@@ -1612,14 +1638,14 @@ export default function RoadmapView({ onboardingData, onReset }: RoadmapViewProp
 
                     {/* Knowledge required */}
                     <div>
-                      <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                        <span>📚</span> Conocimientos y Enfoques
+                      <span className="text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider block mb-1 flex items-center gap-1">
+                        <span>📚</span> Enfoques
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {item.knowledge.map((know, kIdx) => (
                           <span 
                             key={kIdx} 
-                            className="text-[9px] bg-purple-950/20 border border-purple-900/30 px-1.5 py-0.5 rounded text-purple-300"
+                            className="text-[9px] font-mono font-bold bg-purple-50 border border-purple-200 px-1.5 py-0.5 text-purple-700"
                           >
                             {know}
                           </span>

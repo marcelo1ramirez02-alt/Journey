@@ -8,8 +8,11 @@ import ComparisonCards from './components/ComparisonCards';
 import ValueProps from './components/ValueProps';
 import BetaForm from './components/BetaForm';
 import Footer from './components/Footer';
+import CornerCuts from './components/CornerCuts';
 import { OnboardingData, BetaUserLead } from './types';
 import { Sparkles, Compass, Map, UserCheck } from 'lucide-react';
+import LocomotiveScroll from 'locomotive-scroll';
+import { supabase, isConfigured } from './lib/supabaseClient';
 
 export default function App() {
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean>(false);
@@ -17,8 +20,22 @@ export default function App() {
   const [onboardingActive, setOnboardingActive] = useState<boolean>(false);
   const [registeredCount, setRegisteredCount] = useState<number>(148);
 
-  // Sync count on mount from localStorage
+  // Initialize Locomotive Scroll & sync data
   useEffect(() => {
+    const scroll = new LocomotiveScroll({
+      lenisOptions: {
+        wrapper: window,
+        content: document.documentElement,
+        lerp: 0.1,
+        duration: 1.2,
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+      }
+    });
+
     const savedLeads = localStorage.getItem('journey_beta_leads');
     if (savedLeads) {
       try {
@@ -42,6 +59,10 @@ export default function App() {
         console.error(e);
       }
     }
+
+    return () => {
+      scroll.destroy();
+    };
   }, []);
 
   const handleStartOnboarding = () => {
@@ -64,6 +85,29 @@ export default function App() {
     setOnboardingActive(false);
     localStorage.setItem('journey_user_profile', JSON.stringify(data));
     
+    // Save to Supabase if configured
+    if (isConfigured) {
+      (async () => {
+        try {
+          const { error } = await supabase.from('onboardings').insert([
+            {
+              email: data.email,
+              full_name: data.fullName,
+              career: data.career,
+              current_position: data.currentPosition || null
+            }
+          ]);
+          if (error) {
+            console.error('Error saving onboarding data to Supabase:', error);
+          } else {
+            console.log('Onboarding data stored successfully in Supabase.');
+          }
+        } catch (err) {
+          console.error('Failed to insert lead into Supabase:', err);
+        }
+      })();
+    }
+
     // Save onboarding user as a beta lead too if they aren't already
     const savedLeadsRaw = localStorage.getItem('journey_beta_leads');
     let leads: BetaUserLead[] = [];
@@ -125,7 +169,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#05070A] text-[#F3F4F6] font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-brand-bg text-brand-charcoal font-sans selection:bg-brand-blue selection:text-white">
       <Analytics />
       
       {/* Navbar header */}
@@ -151,15 +195,16 @@ export default function App() {
             <div id="onboarding-anchor" className="scroll-mt-20 py-8 px-4 max-w-7xl mx-auto">
               {onboardingActive && (
                 <div className="py-8">
-                  <div className="text-center max-w-2xl mx-auto mb-8">
-                    <span className="text-xs font-bold uppercase tracking-widest text-indigo-400 bg-indigo-950/40 border border-indigo-800/30 px-3 py-1 rounded-full inline-flex items-center gap-1.5">
-                      <Sparkles className="h-3.5 w-3.5 text-indigo-400 animate-spin" style={{ animationDuration: '3s' }} />
-                      Configurador Inteligente
+                  <div className="text-center max-w-2xl mx-auto mb-8 bg-white border-2 border-brand-charcoal p-6 sm:p-8 shadow-[6px_6px_0px_rgba(51,49,51,1)] relative overflow-hidden">
+                    <CornerCuts size={12} color="text-brand-bg" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-brand-blue bg-brand-light-blue border border-brand-blue/30 px-3 py-1 inline-flex items-center gap-1.5 font-mono">
+                      <Sparkles className="h-3.5 w-3.5 text-brand-blue animate-spin" style={{ animationDuration: '3s' }} />
+                      [ CONFIGURADOR INTELIGENTE ]
                     </span>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3">
+                    <h2 className="text-xl sm:text-2xl font-black uppercase text-brand-charcoal mt-3">
                       Estás a un paso de estructurar tu futuro
                     </h2>
-                    <p className="text-slate-400 text-xs sm:text-sm mt-2">
+                    <p className="text-brand-charcoal/70 text-xs sm:text-sm mt-2 font-medium">
                       Ingresa tus datos básicos para poder guardar tu progreso y personalizar las métricas del árbol de carrera.
                     </p>
                   </div>

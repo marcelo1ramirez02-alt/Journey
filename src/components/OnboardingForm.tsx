@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { User, Mail, GraduationCap, Briefcase, ArrowRight, ArrowLeft, Sparkles, Building2 } from 'lucide-react';
 import { OnboardingData } from '../types';
+import CornerCuts from './CornerCuts';
 
 interface OnboardingFormProps {
   onSubmit: (data: OnboardingData) => void;
@@ -170,38 +171,36 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
   const progressPercentage = (step / 3) * 100;
 
   return (
-    <div id="onboarding-card" className="mx-auto max-w-2xl glass p-6 sm:p-8 shadow-2xl backdrop-blur-xl relative">
-      {/* Glow backgrounds */}
-      <div className="absolute -top-10 -left-10 -z-10 h-32 w-32 rounded-full bg-[#0042FF]/10 blur-2xl" />
-      <div className="absolute -bottom-10 -right-10 -z-10 h-32 w-32 rounded-full bg-[#0042FF]/10 blur-2xl" />
+    <div id="onboarding-card" className="mx-auto max-w-2xl bg-[#FFFFFF] border-2 border-brand-charcoal p-6 sm:p-8 shadow-[6px_6px_0px_rgba(51,49,51,1)] relative overflow-hidden">
+      <CornerCuts size={16} color="text-brand-bg" />
 
       {/* Header Info */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#0042FF]">Paso {step} de 3</span>
-          <h3 className="text-xl font-bold text-white mt-1">
-            {step === 1 && 'Ingreso de Acceso'}
-            {step === 2 && 'Tu Carrera y Etapa'}
-            {step === 3 && 'Tu Industria de Interés'}
+          <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-brand-charcoal/60">[ PASO {step} DE 3 ]</span>
+          <h3 className="text-lg font-black uppercase tracking-tight text-brand-charcoal mt-1">
+            {step === 1 && 'Datos de Registro'}
+            {step === 2 && 'Carrera y Nivel'}
+            {step === 3 && 'Rubro e Industria'}
           </h3>
         </div>
-        <div className="flex items-center gap-1.5 bg-[#0042FF]/10 px-2.5 py-1 rounded-full border border-[#0042FF]/20">
-          <Sparkles className="h-3.5 w-3.5 text-[#0042FF] animate-pulse" />
-          <span className="text-[10px] text-blue-300 font-medium">Asistente IA</span>
+        <div className="flex items-center gap-1.5 bg-brand-light-blue border-2 border-brand-charcoal px-3 py-1 font-mono text-[9px] font-bold text-brand-charcoal uppercase">
+          <Sparkles className="h-3.5 w-3.5 text-brand-blue" />
+          <span>IA Copilot</span>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-[#111827] h-1.5 rounded-full mb-8 overflow-hidden">
+      <div className="w-full bg-[#FFFFFF] border-2 border-brand-charcoal h-3 mb-8 overflow-hidden relative">
         <motion.div 
-          className="bg-gradient-to-r from-[#0042FF] to-[#00A3FF] h-full rounded-full"
+          className="bg-brand-blue h-full border-r border-brand-charcoal"
           initial={{ width: '33%' }}
           animate={{ width: `${progressPercentage}%` }}
           transition={{ duration: 0.3 }}
         />
       </div>
 
-      {/* Form Steps container with animations */}
+      {/* Form Steps */}
       <div className="min-h-[260px]">
         <AnimatePresence mode="wait">
           {step === 1 && (
@@ -213,44 +212,44 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
               transition={{ duration: 0.2 }}
               className="space-y-5"
             >
-              <p className="text-sm text-slate-400">
+              <p className="text-xs text-brand-charcoal/70 font-medium">
                 Antes de generar tu roadmap dinámico, ingresa tus datos básicos para poder personalizar la experiencia y guardar tu progreso en la beta.
               </p>
 
               <div>
-                <label className="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Nombre completo</label>
+                <label className="block text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider mb-2">Nombre completo</label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <User className="h-4.5 w-4.5 text-gray-500" />
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                    <User className="h-4.5 w-4.5 text-brand-charcoal/60" />
                   </div>
                   <input
                     type="text"
                     value={formData.fullName}
                     onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                    className="block w-full rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#111827] p-3.5 pl-10 text-sm text-white placeholder-gray-500 focus:border-[#0042FF] focus:outline-none focus:ring-1 focus:ring-[#0042FF] transition-colors"
-                    placeholder="Ej. Marcelo Ramírez"
+                    className="block w-full border-2 border-brand-charcoal bg-white p-3.5 pl-10 text-xs font-mono font-bold text-brand-charcoal placeholder-brand-charcoal/40 focus:border-brand-blue focus:outline-none"
+                    placeholder="Marcelo Ramírez"
                     required
                   />
                 </div>
-                {errors.fullName && <p className="text-rose-400 text-xs mt-1.5">{errors.fullName}</p>}
+                {errors.fullName && <p className="text-red-500 font-mono text-[10px] font-bold mt-1.5">{errors.fullName}</p>}
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Correo electrónico</label>
+                <label className="block text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider mb-2">Correo electrónico</label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <Mail className="h-4.5 w-4.5 text-gray-500" />
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                    <Mail className="h-4.5 w-4.5 text-brand-charcoal/60" />
                   </div>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    className="block w-full rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#111827] p-3.5 pl-10 text-sm text-white placeholder-gray-500 focus:border-[#0042FF] focus:outline-none focus:ring-1 focus:ring-[#0042FF] transition-colors"
+                    className="block w-full border-2 border-brand-charcoal bg-white p-3.5 pl-10 text-xs font-mono font-bold text-brand-charcoal placeholder-brand-charcoal/40 focus:border-brand-blue focus:outline-none"
                     placeholder="ejemplo@correo.com"
                     required
                   />
                 </div>
-                {errors.email && <p className="text-rose-400 text-xs mt-1.5">{errors.email}</p>}
+                {errors.email && <p className="text-red-500 font-mono text-[10px] font-bold mt-1.5">{errors.email}</p>}
               </div>
             </motion.div>
           )}
@@ -264,53 +263,54 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
               transition={{ duration: 0.2 }}
               className="space-y-6"
             >
-              {/* Career text input */}
+              {/* Career input */}
               <div>
-                <label className="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">¿Qué carrera estudias o estudiaste?</label>
+                <label className="block text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider mb-2">¿Qué carrera estudias o estudiaste?</label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <GraduationCap className="h-4.5 w-4.5 text-gray-500" />
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                    <GraduationCap className="h-4.5 w-4.5 text-brand-charcoal/60" />
                   </div>
                   <input
                     type="text"
                     value={formData.career}
                     onChange={(e) => setFormData(prev => ({ ...prev, career: e.target.value }))}
-                    className="block w-full rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#111827] p-3.5 pl-10 text-sm text-white placeholder-gray-500 focus:border-[#0042FF] focus:outline-none focus:ring-1 focus:ring-[#0042FF] transition-colors"
-                    placeholder="Ej. Ingeniería de Sistemas, Administración de Empresas, Psicología..."
+                    className="block w-full border-2 border-brand-charcoal bg-white p-3.5 pl-10 text-xs font-mono font-bold text-brand-charcoal placeholder-brand-charcoal/40 focus:border-brand-blue focus:outline-none"
+                    placeholder="Ingeniería de Sistemas, Administración..."
                     required
                     autoFocus
                   />
                 </div>
-                <p className="text-[10px] text-gray-500 mt-1">Escribe tu carrera profesional para que la IA estructure las habilidades específicas de tu sector.</p>
-                {errors.career && <p className="text-rose-400 text-xs mt-1.5">{errors.career}</p>}
+                <p className="text-[9px] font-mono text-brand-charcoal/50 mt-1">Escribe tu carrera profesional para que la IA estructure las habilidades específicas de tu sector.</p>
+                {errors.career && <p className="text-red-500 font-mono text-[10px] font-bold mt-1.5">{errors.career}</p>}
               </div>
 
               {/* Stage selector */}
               <div>
-                <label className="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-3">Etapa o ciclo actual (Tu punto de partida)</label>
+                <label className="block text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider mb-3">Etapa o ciclo actual (Punto de partida)</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {stages.map((st) => (
                     <button
                       key={st.id}
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, stage: st.id }))}
-                      className={`flex flex-col p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
+                      className={`flex flex-col p-3 border-2 text-left transition-all duration-150 cursor-pointer relative overflow-hidden ${
                         formData.stage === st.id
-                          ? 'border-[#0042FF] bg-[#0042FF]/10 text-white shadow-md shadow-[#0042FF]/5'
-                          : 'border-[rgba(255,255,255,0.08)] bg-[#111827] text-gray-400 hover:border-gray-700 hover:text-white'
+                          ? 'border-brand-blue bg-brand-light-blue text-brand-charcoal shadow-[3px_3px_0px_rgba(51,49,51,1)]'
+                          : 'border-brand-charcoal/30 bg-white text-brand-charcoal/80 hover:border-brand-charcoal hover:text-brand-charcoal'
                       }`}
                     >
+                      <CornerCuts size={8} color={formData.stage === st.id ? "text-brand-light-blue" : "text-white"} />
                       <div className="flex items-center gap-2">
-                        <Briefcase className={`h-4 w-4 ${formData.stage === st.id ? 'text-[#0042FF]' : 'text-gray-500'}`} />
-                        <span className="text-xs sm:text-sm font-semibold">{st.label}</span>
+                        <Briefcase className={`h-4 w-4 ${formData.stage === st.id ? 'text-brand-blue' : 'text-brand-charcoal/50'}`} />
+                        <span className="text-xs sm:text-sm font-black uppercase font-mono">{st.label}</span>
                       </div>
-                      <span className="text-[10px] text-gray-500 mt-1 leading-normal">{st.desc}</span>
+                      <span className="text-[10px] text-brand-charcoal/60 mt-1 leading-normal">{st.desc}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Conditional current/previous/desired position field */}
+              {/* Conditional position input */}
               {['practicante_pre', 'practicante_pro', 'junior'].includes(formData.stage) && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -319,26 +319,26 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
                   transition={{ duration: 0.2 }}
                   className="space-y-2 pt-2"
                 >
-                  <label className="block text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <label className="block text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider">
                     ¿Cuál es tu puesto actual, anterior o al que deseas apuntar?
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <Briefcase className="h-4.5 w-4.5 text-gray-500" />
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                      <Briefcase className="h-4.5 w-4.5 text-brand-charcoal/60" />
                     </div>
                     <input
                       type="text"
                       value={formData.currentPosition || ''}
                       onChange={(e) => setFormData(prev => ({ ...prev, currentPosition: e.target.value }))}
-                      className="block w-full rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#111827] p-3.5 pl-10 text-sm text-white placeholder-gray-500 focus:border-[#0042FF] focus:outline-none focus:ring-1 focus:ring-[#0042FF] transition-colors"
-                      placeholder="Ej. Growth Marketing Intern, Practicante de FP&A, Analista Junior..."
+                      className="block w-full border-2 border-brand-charcoal bg-white p-3.5 pl-10 text-xs font-mono font-bold text-brand-charcoal placeholder-brand-charcoal/40 focus:border-brand-blue focus:outline-none"
+                      placeholder="Ej. Practicante de FP&A, Analista Junior..."
                       required
                     />
                   </div>
-                  <p className="text-[10px] text-gray-500 mt-1">
-                    Ingresa tu puesto para mapear alternativas, transiciones de carrera y puestos siguientes en la industria seleccionada.
+                  <p className="text-[9px] font-mono text-brand-charcoal/50 mt-1">
+                    Ingresa tu puesto para mapear alternativas, transiciones de carrera y puestos siguientes.
                   </p>
-                  {errors.currentPosition && <p className="text-rose-400 text-xs mt-1.5">{errors.currentPosition}</p>}
+                  {errors.currentPosition && <p className="text-red-500 font-mono text-[10px] font-bold mt-1.5">{errors.currentPosition}</p>}
                 </motion.div>
               )}
             </motion.div>
@@ -353,24 +353,22 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
               transition={{ duration: 0.2 }}
               className="space-y-5"
             >
-              <p className="text-sm text-slate-400">
-                Selecciona la industria en la que deseas trabajar. La especialización, proyectos de CV, herramientas y requisitos del roadmap se adaptarán según el rubro, ya que un puesto varía mucho según el sector.
+              <p className="text-xs text-brand-charcoal/70 font-medium">
+                Selecciona la industria en la que deseas trabajar. La especialización, proyectos de CV, herramientas y requisitos del roadmap se adaptarán según el rubro.
               </p>
 
               {loadingIndustries ? (
                 <div className="space-y-4 py-4 text-center">
                   <div className="flex justify-center items-center gap-3">
-                    <Sparkles className="h-5 w-5 text-[#0042FF] animate-spin" />
-                    <span className="text-sm text-blue-300 font-medium font-mono">IA analizando tu carrera ({formData.career})...</span>
+                    <Sparkles className="h-5 w-5 text-brand-blue animate-spin" />
+                    <span className="text-xs font-black uppercase font-mono text-brand-charcoal">IA estructurando industrias para {formData.career}...</span>
                   </div>
-                  <p className="text-xs text-gray-500 max-w-sm mx-auto leading-relaxed">
-                    Estructurando sectores de especialización industrial altamente específicos y funcionales para tu perfil.
-                  </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-4">
                     {[1, 2, 3, 4].map((idx) => (
-                      <div key={idx} className="animate-pulse flex flex-col p-4 rounded-xl border border-[rgba(255,255,255,0.04)] bg-[#111827] space-y-2">
-                        <div className="h-3.5 bg-gray-800 rounded w-2/3" />
-                        <div className="h-2.5 bg-gray-800 rounded w-full" />
+                      <div key={idx} className="animate-pulse flex flex-col p-4 border-2 border-brand-charcoal bg-[#FFFFFF] space-y-2 relative">
+                        <CornerCuts size={8} color="text-brand-bg" />
+                        <div className="h-3.5 bg-brand-light-blue rounded w-2/3 border border-brand-charcoal/10" />
+                        <div className="h-2.5 bg-brand-light-blue rounded w-full border border-brand-charcoal/10" />
                       </div>
                     ))}
                   </div>
@@ -378,7 +376,7 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
               ) : (
                 <>
                   {industryFetchError && (
-                    <div className="bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs p-3 rounded-xl">
+                    <div className="bg-amber-500/10 border-2 border-brand-charcoal text-amber-800 text-xs p-3 font-mono font-bold">
                       {industryFetchError}
                     </div>
                   )}
@@ -398,17 +396,18 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
                             });
                           }
                         }}
-                        className={`flex flex-col p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
+                        className={`flex flex-col p-3 border-2 text-left transition-all duration-150 cursor-pointer relative overflow-hidden ${
                           selectedIndustryKey === ind.id
-                            ? 'border-[#0042FF] bg-[#0042FF]/10 text-white shadow-md shadow-[#0042FF]/5'
-                            : 'border-[rgba(255,255,255,0.08)] bg-[#111827] text-gray-400 hover:border-gray-700 hover:text-white'
+                            ? 'border-brand-blue bg-brand-light-blue text-brand-charcoal shadow-[3px_3px_0px_rgba(51,49,51,1)]'
+                            : 'border-brand-charcoal/30 bg-white text-brand-charcoal/80 hover:border-brand-charcoal hover:text-brand-charcoal'
                         }`}
                       >
+                        <CornerCuts size={8} color={selectedIndustryKey === ind.id ? "text-brand-light-blue" : "text-white"} />
                         <div className="flex items-center gap-2">
-                          <Building2 className={`h-4 w-4 ${selectedIndustryKey === ind.id ? 'text-[#0042FF]' : 'text-gray-500'}`} />
-                          <span className="text-xs sm:text-sm font-semibold">{ind.label}</span>
+                          <Building2 className={`h-4 w-4 ${selectedIndustryKey === ind.id ? 'text-brand-blue' : 'text-brand-charcoal/50'}`} />
+                          <span className="text-xs sm:text-sm font-black uppercase font-mono">{ind.label}</span>
                         </div>
-                        <span className="text-[10px] text-gray-500 mt-1 leading-normal">{ind.desc}</span>
+                        <span className="text-[10px] text-brand-charcoal/60 mt-1 leading-normal">{ind.desc}</span>
                       </button>
                     ))}
                   </div>
@@ -419,17 +418,17 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
                       animate={{ opacity: 1, y: 0 }}
                       className="mt-3"
                     >
-                      <label className="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Escribe tu industria personalizada</label>
+                      <label className="block text-[10px] font-black font-mono text-brand-charcoal uppercase tracking-wider mb-2">Escribe tu industria personalizada</label>
                       <input
                         type="text"
                         value={customIndustryText}
                         onChange={(e) => setCustomIndustryText(e.target.value)}
-                        className="block w-full rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#111827] p-3.5 text-sm text-white placeholder-gray-500 focus:border-[#0042FF] focus:outline-none focus:ring-1 focus:ring-[#0042FF] transition-colors"
-                        placeholder="Ej. Minería y Construcción, Sector Público, Energía Renovable..."
+                        className="block w-full border-2 border-brand-charcoal bg-white p-3.5 text-xs font-mono font-bold text-brand-charcoal placeholder-brand-charcoal/40 focus:border-brand-blue focus:outline-none"
+                        placeholder="Ej. Minería y Construcción, Sector Público..."
                         required
                         autoFocus
                       />
-                      {errors.industry && <p className="text-rose-400 text-xs mt-1.5">{errors.industry}</p>}
+                      {errors.industry && <p className="text-red-500 font-mono text-[10px] font-bold mt-1.5">{errors.industry}</p>}
                     </motion.div>
                   )}
                 </>
@@ -440,26 +439,27 @@ export default function OnboardingForm({ onSubmit, onCancel }: OnboardingFormPro
       </div>
 
       {/* Footer Navigation */}
-      <div className="mt-8 pt-4 border-t border-[rgba(255,255,255,0.08)] flex justify-between items-center">
+      <div className="mt-8 pt-4 border-t-2 border-brand-charcoal flex justify-between items-center">
         <button
           type="button"
           onClick={handleBack}
-          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold text-gray-400 hover:text-white transition-colors cursor-pointer"
+          className="brutalist-button brutalist-button-secondary text-xs py-2 px-4 flex items-center gap-1.5 uppercase"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <CornerCuts size={6} color="text-white" />
+          <ArrowLeft className="h-3.5 w-3.5" />
           Atrás
         </button>
 
         <button
           type="button"
           onClick={handleNext}
-          className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-[#0042FF] to-[#00A3FF] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#0042FF]/10 hover:shadow-[#0042FF]/25 transition-all duration-200 cursor-pointer"
+          className="brutalist-button brutalist-button-primary text-xs py-2.5 px-5 flex items-center gap-1.5 uppercase"
         >
-          {step === 3 ? 'Generar mi roadmap' : 'Siguiente'}
-          <ArrowRight className="h-4 w-4" />
+          <CornerCuts size={6} color="text-brand-blue" />
+          {step === 3 ? 'Generar Roadmap' : 'Siguiente'}
+          <ArrowRight className="h-3.5 w-3.5" />
         </button>
       </div>
     </div>
   );
 }
-

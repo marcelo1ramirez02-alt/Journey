@@ -160,6 +160,11 @@ app.post('/api/roadmap', async (req, res) => {
          - "project": Proyecto estratégico de gran escala (ej. "Diseño y homologación internacional de un nuevo sistema de control de actitud de nanosatélites de órbita baja").
          - "req": Títulos de posgrado, licencias o experiencia robusta necesaria (ej. "Título profesional, 5+ años en desarrollo de sistemas espaciales, certificación INCOSE ASEP/CSEP").
        - "industries": Un arreglo de 2 elementos indicando sectores donde se aplica (ej. [{ "name": "Manufactura Satelital", "detail": "Desarrollo de hardware espacial" }, { "name": "Mantenimiento Aeronáutico MRO", "detail": "Auditorías de aeronavegabilidad" }])
+        - "certification": Objeto que representa la especialización de postgrado, certificación profesional o maestría recomendada específicamente en esta rama para ayudar al usuario a consolidar, estructurar y validar las habilidades técnicas y de análisis desarrolladas en sus puestos anteriores (como practicante y asistente/analista junior) y así acelerar su inserción al puesto senior de esta área. Con propiedades:
+           - "title": Nombre real de la especialización, diplomado o certificación (ej. "Certificación PMI-PMP", "Especialización en Supply Chain Management"). NO uses títulos genéricos.
+           - "description": Explica de forma muy específica cómo este estudio/título ayuda a convalidar y estructurar las habilidades anteriores que el usuario desarrolló para subir al puesto senior de esta rama (máx 35 palabras).
+           - "howToDevelop": Plan o pasos prácticos recomendados para postular y obtener esta especialización o certificación.
+           - "relatedTools": Arreglo de 1 o 2 credenciales/marcos de trabajo asociados (ej. ["PMI", "PMP"]).
     6. "careerProgression": Un arreglo de EXACTAMENTE ${numProgressionNodes} puestos/roles de progresión secuenciales que representen la línea de carrera y alternativas de crecimiento en esa industria de "${targetIndustry}".
         ${currentPosition ? `Dado que especificaste tu puesto actual como "${currentPosition}", genera un abanico completo de EXACTAMENTE 6 puestos secuenciales para la pizarra interactiva. El primero debe ser tu puesto de inicio (ej. "${currentPosition}"), el segundo el nivel Junior, el tercero Especialista Senior / Coordinador, el cuarto Jefe / Supervisor, el quinto Gerente / Manager, y el sexto Director o Ejecutivo C-level, mostrando opciones de prácticas, puestos junior, senior, y gerentes/managers/coordinadores.` : `Genera exactamente 3 puestos secuenciales de crecimiento a partir del nivel Junior (ej. Especialista Senior, Coordinador, Gerente).`}
         Cada uno de los puestos debe tener:
@@ -276,9 +281,19 @@ app.post('/api/roadmap', async (req, res) => {
                       },
                       required: ['name', 'detail']
                     }
+                  },
+                  certification: {
+                    type: Type.OBJECT,
+                    properties: {
+                      title: { type: Type.STRING },
+                      description: { type: Type.STRING },
+                      howToDevelop: { type: Type.STRING },
+                      relatedTools: { type: Type.ARRAY, items: { type: Type.STRING } }
+                    },
+                    required: ['title', 'description', 'howToDevelop', 'relatedTools']
                   }
                 },
-                required: ['id', 'name', 'description', 'why', 'subareas', 'practiceRole', 'juniorRole', 'specRole', 'industries']
+                required: ['id', 'name', 'description', 'why', 'subareas', 'practiceRole', 'juniorRole', 'specRole', 'industries', 'certification']
               }
             },
             careerProgression: {
